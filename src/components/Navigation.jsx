@@ -1,64 +1,30 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
-import { weddingConfig } from '../data/config';
 
-const navItems = [
-  { label: 'Home', href: '#home' },
-  ...(weddingConfig.coupleStory && weddingConfig.coupleStory.length > 0 ? [{ label: 'Our Story', href: '#story' }] : []),
-  { label: 'Events', href: '#events' },
-  { label: 'Gallery', href: '#gallery' },
-  ...(weddingConfig.rsvp.enabled ? [{ label: 'RSVP', href: '#rsvp' }] : []),
+const navLinks = [
+  { name: 'Home', href: '#home' },
+  { name: 'Events', href: '#events' },
+  { name: 'Venue', href: '#venue' },
+  { name: 'Gallery', href: '#gallery' },
+  { name: 'RSVP', href: '#rsvp' },
 ];
 
 export function Navigation() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState('home');
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { couple } = weddingConfig;
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  // Handle scroll detection and active section highlighting
   useEffect(() => {
     const handleScroll = () => {
-      // Toggle blur/background when scrolled past 50px
-      setIsScrolled(window.scrollY > 50);
-
-      // Calculate which section is currently visible
-      const sections = navItems.map(item => item.href.substring(1));
-      let current = '';
-      
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          // Adjust threshold based on a comfortable reading position
-          if (rect.top <= 200 && rect.bottom >= 200) {
-            current = section;
-            break;
-          }
-        }
-      }
-      if (current) setActiveSection(current);
+      setScrolled(window.scrollY > 50);
     };
-
     window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial check
-    
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Prevent background scrolling when mobile menu is open
-  useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => { document.body.style.overflow = 'unset'; };
-  }, [isMobileMenuOpen]);
-
-  const scrollTo = (href) => {
-    setIsMobileMenuOpen(false);
+  const handleClick = (e, href) => {
+    e.preventDefault();
+    setIsOpen(false);
     const element = document.querySelector(href);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -67,105 +33,56 @@ export function Navigation() {
 
   return (
     <>
-      <header 
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
-          isScrolled 
-            ? 'bg-charcoal-base/90 backdrop-blur-md py-4 shadow-lg border-b border-gold-base/10' 
-            : 'bg-gradient-to-b from-charcoal-base/60 to-transparent py-6'
-        }`}
+      <motion.nav 
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        className={`fixed top-0 inset-x-0 z-40 transition-all duration-300 ${scrolled ? 'bg-paper/90 backdrop-blur-md shadow-md border-b border-gold/20 py-3' : 'bg-transparent py-4'}`}
       >
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          
-          {/* Logo / Initials */}
-          <div 
-            className="font-serif text-2xl text-gold-light cursor-pointer hover:text-gold-base transition-colors" 
-            onClick={() => scrollTo('#home')}
-          >
-            {couple.groomName[0]} & {couple.brideName[0]}
+        <div className="max-w-md mx-auto px-6 flex items-center justify-between">
+          <div className="font-serif text-xl text-emerald font-bold tracking-widest">
+            D & S
           </div>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-10">
-            {navItems.map((item) => (
-              <button
-                key={item.label}
-                onClick={() => scrollTo(item.href)}
-                className={`font-sans text-[0.65rem] uppercase tracking-[0.2em] transition-all duration-300 relative ${
-                  activeSection === item.href.substring(1) 
-                    ? 'text-gold-base font-semibold' 
-                    : 'text-ivory-50/70 hover:text-ivory-50'
-                }`}
-              >
-                {item.label}
-                {/* Active Indicator Underline */}
-                {activeSection === item.href.substring(1) && (
-                  <motion.div 
-                    layoutId="activeNavIndicator"
-                    className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1/2 h-[1px] bg-gold-base"
-                  />
-                )}
-              </button>
-            ))}
-          </nav>
-
-          {/* Mobile Menu Toggle */}
           <button 
-            className="md:hidden text-gold-light p-2 -mr-2 hover:text-gold-base transition-colors"
-            onClick={() => setIsMobileMenuOpen(true)}
-            aria-label="Open navigation menu"
+            onClick={() => setIsOpen(!isOpen)}
+            className="p-2 text-emerald hover:text-gold transition-colors"
           >
             <Menu className="w-6 h-6" />
           </button>
         </div>
-      </header>
+      </motion.nav>
 
-      {/* Mobile Menu Overlay */}
       <AnimatePresence>
-        {isMobileMenuOpen && (
+        {isOpen && (
           <motion.div
-            initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
-            animate={{ opacity: 1, backdropFilter: 'blur(20px)' }}
-            exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
-            transition={{ duration: 0.4 }}
-            className="fixed inset-0 z-50 bg-charcoal-base/95 flex flex-col items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-emerald/95 backdrop-blur-lg flex flex-col items-center justify-center"
           >
             <button 
-              className="absolute top-6 right-6 text-gold-light p-3 hover:text-gold-base transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
-              aria-label="Close navigation menu"
+              onClick={() => setIsOpen(false)}
+              className="absolute top-6 right-6 p-2 text-gold hover:text-paper transition-colors"
             >
               <X className="w-8 h-8" />
             </button>
             
-            <nav className="flex flex-col items-center gap-8 sm:gap-10 overflow-y-auto max-h-[75vh] w-full px-4 scrollbar-hide py-4">
-              {navItems.map((item, i) => (
-                <motion.button
-                  key={item.label}
-                  initial={{ opacity: 0, y: 30 }}
+            <div className="flex flex-col items-center gap-8">
+              {navLinks.map((link, i) => (
+                <motion.a
+                  key={link.name}
+                  href={link.href}
+                  onClick={(e) => handleClick(e, link.href)}
+                  initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  transition={{ delay: i * 0.1, duration: 0.5, ease: "easeOut" }}
-                  onClick={() => scrollTo(item.href)}
-                  className={`font-serif text-2xl sm:text-4xl tracking-widest uppercase transition-colors flex-shrink-0 ${
-                    activeSection === item.href.substring(1) 
-                      ? 'text-gold-base drop-shadow-md' 
-                      : 'text-ivory-50 hover:text-ivory-100'
-                  }`}
+                  transition={{ delay: i * 0.1 }}
+                  className="font-serif text-3xl sm:text-4xl text-paper hover:text-gold transition-colors uppercase tracking-widest"
                 >
-                  {item.label}
-                </motion.button>
+                  {link.name}
+                </motion.a>
               ))}
-            </nav>
+            </div>
             
-            {/* Decorative bottom element */}
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.6, duration: 0.8 }}
-              className="absolute bottom-16 divider-gold opacity-50"
-            >
-              <div className="divider-gold-icon" />
-            </motion.div>
+            <div className="absolute bottom-12 w-12 h-px bg-gold/50" />
           </motion.div>
         )}
       </AnimatePresence>

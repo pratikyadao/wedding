@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { weddingConfig } from '../data/config';
 
 export function GallerySection() {
@@ -8,183 +8,139 @@ export function GallerySection() {
   
   if (!gallery || gallery.length === 0) return null;
 
-  const [activeIndex, setActiveIndex] = useState(null);
+  const [[page, direction], setPage] = useState([0, 0]);
+  const [isDragging, setIsDragging] = useState(false);
 
-  // Keyboard navigation for desktop
-  const handleKeyDown = useCallback((e) => {
-    if (activeIndex === null) return;
-    if (e.key === 'Escape') setActiveIndex(null);
-    if (e.key === 'ArrowRight') navigate(1);
-    if (e.key === 'ArrowLeft') navigate(-1);
-  }, [activeIndex]);
+  // Wrap around index
+  const imageIndex = Math.abs(page % gallery.length);
 
-  useEffect(() => {
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [handleKeyDown]);
+  const paginate = (newDirection) => {
+    setPage([page + newDirection, newDirection]);
+  };
 
-  // Lock body scroll when lightbox is open to prevent background scrolling
-  useEffect(() => {
-    if (activeIndex !== null) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
+  const swipeConfidenceThreshold = 10000;
+  const swipePower = (offset, velocity) => {
+    return Math.abs(offset) * velocity;
+  };
+
+  const variants = {
+    enter: (direction) => {
+      return {
+        x: direction > 0 ? 1000 : -1000,
+        opacity: 0,
+        scale: 0.95
+      };
+    },
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+      scale: 1
+    },
+    exit: (direction) => {
+      return {
+        zIndex: 0,
+        x: direction < 0 ? 1000 : -1000,
+        opacity: 0,
+        scale: 0.95
+      };
     }
-    return () => { document.body.style.overflow = 'unset'; };
-  }, [activeIndex]);
-
-  const navigate = (direction) => {
-    setActiveIndex((prev) => {
-      if (prev === null) return null;
-      let next = prev + direction;
-      if (next < 0) next = gallery.length - 1;
-      if (next >= gallery.length) next = 0;
-      return next;
-    });
-  };
-
-  // Mobile swipe gesture support
-  const [touchStart, setTouchStart] = useState(null);
-  const [touchEnd, setTouchEnd] = useState(null);
-  const minSwipeDistance = 50;
-
-  const onTouchStart = (e) => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-  const onTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientX);
-  const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    const distance = touchStart - touchEnd;
-    if (distance > minSwipeDistance) navigate(1); // Swiped Left
-    if (distance < -minSwipeDistance) navigate(-1); // Swiped Right
   };
 
   return (
-    <section className="relative w-full py-24 sm:py-32 bg-ivory-100 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+    <section className="relative w-full py-24 bg-charcoal overflow-hidden flex flex-col items-center px-6">
+      <div className="absolute inset-4 border border-gold/10 pointer-events-none rounded-sm z-0" />
+      
+      <div className="max-w-md mx-auto w-full relative z-10 flex flex-col items-center">
         
-        {/* Heading */}
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 1 }}
-          className="text-center mb-16 sm:mb-24"
+          viewport={{ once: true }}
+          className="text-center mb-12"
         >
-          <h2 className="font-script text-4xl sm:text-5xl text-gold-base mb-2">Captured Moments</h2>
-          <h3 className="font-serif text-3xl sm:text-5xl text-crimson-base tracking-wide">Photo Gallery</h3>
-          <div className="divider-gold opacity-60 mt-2">
-            <div className="divider-gold-icon" />
-          </div>
+          <h2 className="font-serif text-3xl text-gold mb-2">
+            Beautiful Moments
+          </h2>
+          <div className="w-12 h-px bg-gold/30 mx-auto mt-4" />
         </motion.div>
 
-        {/* Masonry Grid Layout */}
-        <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 sm:gap-6 space-y-4 sm:space-y-6">
-          {gallery.map((photo, index) => (
-            <motion.div 
-              key={index}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: (index % 3) * 0.15 }}
-              className="relative break-inside-avoid group cursor-pointer overflow-hidden rounded-sm border border-gold-base/10 shadow-sm bg-white p-1"
-              onClick={() => setActiveIndex(index)}
-            >
-              <img 
-                src={photo.url} 
-                alt={photo.caption} 
-                loading="lazy"
-                className="w-full h-auto object-cover transform transition-transform duration-[2000ms] ease-out group-hover:scale-105"
-              />
-              
-              {/* Elegant Hover Overlay */}
-              <div className="absolute inset-1 bg-gradient-to-t from-charcoal-base/80 via-charcoal-base/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
-                <span className="font-serif italic text-ivory-50 text-xl tracking-wide transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 shadow-sm">
-                  {photo.caption}
-                </span>
-              </div>
-            </motion.div>
+        {/* Portrait Focused Slider */}
+        <div className="relative w-full aspect-[3/4] sm:aspect-[4/5] flex items-center justify-center overflow-hidden rounded-md border border-gold/40 shadow-2xl bg-black">
+          <AnimatePresence initial={false} custom={direction}>
+            <motion.img
+              key={page}
+              src={gallery[imageIndex].url}
+              alt={gallery[imageIndex].caption}
+              custom={direction}
+              variants={variants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { type: "spring", stiffness: 300, damping: 30 },
+                opacity: { duration: 0.2 }
+              }}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={1}
+              onDragStart={() => setIsDragging(true)}
+              onDragEnd={(e, { offset, velocity }) => {
+                setIsDragging(false);
+                const swipe = swipePower(offset.x, velocity.x);
+                if (swipe < -swipeConfidenceThreshold) {
+                  paginate(1);
+                } else if (swipe > swipeConfidenceThreshold) {
+                  paginate(-1);
+                }
+              }}
+              loading="lazy"
+              className="absolute w-full h-full object-cover rounded-md pointer-events-auto cursor-grab active:cursor-grabbing"
+            />
+          </AnimatePresence>
+
+          {/* Navigation Controls */}
+          {!isDragging && (
+            <>
+              <button 
+                className="absolute left-2 p-2 rounded-full bg-charcoal/50 text-gold hover:bg-gold/20 backdrop-blur-md transition-colors z-20"
+                onClick={() => paginate(-1)}
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button 
+                className="absolute right-2 p-2 rounded-full bg-charcoal/50 text-gold hover:bg-gold/20 backdrop-blur-md transition-colors z-20"
+                onClick={() => paginate(1)}
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </>
+          )}
+
+          {/* Caption Overlay */}
+          <div className="absolute bottom-0 inset-x-0 p-6 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none z-10 flex flex-col items-center text-center">
+            <span className="font-serif italic text-paper text-lg tracking-wide drop-shadow-md">
+              {gallery[imageIndex].caption}
+            </span>
+          </div>
+        </div>
+
+        {/* Pagination Dots */}
+        <div className="flex gap-2 mt-6 flex-wrap justify-center max-w-[80%]">
+          {gallery.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => {
+                const newDirection = idx > imageIndex ? 1 : -1;
+                setPage([page + (idx - imageIndex), newDirection]);
+              }}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${idx === imageIndex ? 'bg-gold scale-125' : 'bg-gold/30 hover:bg-gold/60'}`}
+              aria-label={`Go to image ${idx + 1}`}
+            />
           ))}
         </div>
+
       </div>
-
-      {/* Fullscreen Lightbox Modal */}
-      <AnimatePresence>
-        {activeIndex !== null && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-charcoal-base/95 backdrop-blur-md"
-            onClick={() => setActiveIndex(null)}
-          >
-            {/* Close Button */}
-            <button 
-              className="absolute top-4 right-4 sm:top-8 sm:right-8 p-3 rounded-full bg-white/5 hover:bg-white/20 text-white transition-colors z-50"
-              onClick={(e) => { e.stopPropagation(); setActiveIndex(null); }}
-              aria-label="Close lightbox"
-            >
-              <X className="w-6 h-6" />
-            </button>
-
-            {/* Desktop Navigation */}
-            <button 
-              className="hidden sm:flex absolute left-8 p-4 rounded-full bg-white/5 hover:bg-white/20 text-white transition-colors z-50"
-              onClick={(e) => { e.stopPropagation(); navigate(-1); }}
-              aria-label="Previous image"
-            >
-              <ChevronLeft className="w-8 h-8" />
-            </button>
-            <button 
-              className="hidden sm:flex absolute right-8 p-4 rounded-full bg-white/5 hover:bg-white/20 text-white transition-colors z-50"
-              onClick={(e) => { e.stopPropagation(); navigate(1); }}
-              aria-label="Next image"
-            >
-              <ChevronRight className="w-8 h-8" />
-            </button>
-
-            {/* Active Image Container (Supports Touch Swiping) */}
-            <div 
-              className="w-full h-full flex flex-col items-center justify-center p-4 sm:p-12 relative"
-              onClick={(e) => e.stopPropagation()}
-              onTouchStart={onTouchStart}
-              onTouchMove={onTouchMove}
-              onTouchEnd={onTouchEnd}
-            >
-              <AnimatePresence mode="wait">
-                <motion.img 
-                  key={activeIndex}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.2 }}
-                  src={gallery[activeIndex].url} 
-                  alt={gallery[activeIndex].caption}
-                  className="max-w-full max-h-[85vh] object-contain rounded-sm drop-shadow-2xl pointer-events-none select-none"
-                />
-              </AnimatePresence>
-              
-              <motion.p 
-                key={`caption-${activeIndex}`}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="absolute bottom-10 sm:bottom-12 left-0 right-0 font-serif italic text-ivory-50 text-xl sm:text-2xl tracking-wide text-center px-4 drop-shadow-md"
-              >
-                {gallery[activeIndex].caption}
-              </motion.p>
-            </div>
-            
-            {/* Mobile Swipe Hint */}
-            <div className="absolute bottom-4 sm:hidden text-ivory-50/40 font-sans text-[0.65rem] uppercase tracking-widest pointer-events-none">
-              Swipe to navigate
-            </div>
-            
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
   );
 }

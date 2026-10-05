@@ -22,6 +22,7 @@ export const weddingConfig = {
   // 2. MAIN WEDDING DETAILS
   // -----------------------------------------------------
   wedding: {
+    invocation: "श्री गणेशाय नमः",
     weddingDate: "December 28, 2026",
     weddingTime: "11:00 AM",
     targetDateISO: "2026-12-28T11:00:00+05:30", // Strict ISO format for accurate countdown
@@ -146,7 +147,7 @@ export const weddingConfig = {
   // -----------------------------------------------------
   socialSharing: {
     hashtag: "#DiptiWedsShantanu",
-    text: "Join us in celebrating the wedding of Diptiksha and Shantanu!",
-    url: "https://our-wedding-invite.vercel.app", 
+    text: "Join Dipti & Shantanu as they begin their beautiful journey together.",
+    url: "https://dipti-shantanu-wedding.vercel.app", 
   },
 };

@@ -12,3 +12,5 @@ export { CountdownSection } from './CountdownSection';
 export { GallerySection } from './GallerySection';
 export { FamilySection } from './FamilySection';
 export { FooterSection } from './FooterSection';
+export { VenueSection } from './VenueSection';
+export { DressCodeSection } from './DressCodeSection';
