@@ -101,3 +101,31 @@
     @apply scale-[1.03];
   }
 }
+
+/* -----------------------------------------------------
+ * 4. CONTINUOUS CINEMATIC FILM ROLL MARQUEE
+ * -----------------------------------------------------
+ */
+@keyframes film-roll-marquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+.animate-film-roll {
+  animation: film-roll-marquee var(--marquee-duration, 55s) linear infinite;
+  will-change: transform;
+}
+
+.film-roll-container:hover .animate-film-roll {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-film-roll {
+    animation-play-state: paused;
+  }
+}

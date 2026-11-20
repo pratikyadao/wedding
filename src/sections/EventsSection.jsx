@@ -1,16 +1,15 @@
 import { motion } from 'framer-motion';
 import { weddingConfig } from '../data/config';
-import { MapPin, ExternalLink } from 'lucide-react';
 
-const Illustrations = {
-  carnival: "🎡",
-  sangeet: "🎵",
-  wedding: "👑",
-  reception: "🥂"
+const EventAvatars = {
+  carnival: "/avatar-haldi.jpg",
+  sangeet: "/avatar-sangeet.jpg",
+  wedding: "/avatar-wedding.jpg",
+  reception: "/avatar-reception.jpg"
 };
 
 export function EventsSection() {
-  const { events, wedding } = weddingConfig;
+  const { events } = weddingConfig;
   const eventList = Object.keys(events).map(key => ({
     id: key,
     ...events[key]
@@ -33,13 +32,7 @@ export function EventsSection() {
           <h2 className="font-serif text-3xl sm:text-4xl text-emerald mb-4">
             The Celebration Unfolds
           </h2>
-          <p className="font-sans text-[0.65rem] uppercase tracking-[0.2em] text-charcoal/70">
-            All events will be hosted at
-          </p>
-          <p className="font-serif italic text-emerald text-lg mt-1">
-            {wedding.weddingVenue}
-          </p>
-          <div className="w-12 h-px bg-gold/50 mx-auto mt-6" />
+          <div className="w-12 h-px bg-gold/50 mx-auto mt-4" />
         </motion.div>
 
         <div className="flex flex-col gap-12 relative w-full">
@@ -57,7 +50,7 @@ export function EventsSection() {
 }
 
 function EventCard({ event, index }) {
-  const illustration = Illustrations[event.id] || "✨";
+  const avatar = EventAvatars[event.id];
 
   return (
     <motion.div 
@@ -67,7 +60,11 @@ function EventCard({ event, index }) {
       transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
       className="indian-card bg-white p-6 sm:p-8 flex flex-col items-center text-center shadow-lg border border-gold/30 relative"
     >
-      <div className="text-4xl mb-4">{illustration}</div>
+      {avatar && (
+        <div className="w-32 h-44 mb-4 rounded-xl overflow-hidden shadow-md border-2 border-gold/40">
+          <img src={avatar} alt={event.eventName} className="w-full h-full object-cover" />
+        </div>
+      )}
       
       <h3 className="font-serif text-2xl sm:text-3xl text-emerald mb-4">
         {event.eventName}

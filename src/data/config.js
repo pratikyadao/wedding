@@ -139,7 +139,13 @@ export const weddingConfig = {
   // 8. AUDIO / BACKGROUND MUSIC
   // -----------------------------------------------------
   audio: {
-    musicUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", 
+    title: "Jashn-E-Bahaaraa (Instrumental - Flute)",
+    artist: "A.R. Rahman",
+    movie: "Jodhaa Akbar",
+    spotifyUrl: "https://open.spotify.com/track/5EzxMOsEbQFHDhLu2aarFY?si=170319cfbc4948d4",
+    spotifyEmbedUrl: "https://open.spotify.com/embed/track/5EzxMOsEbQFHDhLu2aarFY?utm_source=generator&theme=0",
+    musicUrl: "/audio/jashn-e-bahaaraa.mp3",
+    wavUrl: "/audio/jashn-e-bahaaraa.wav",
   },
 
   // -----------------------------------------------------

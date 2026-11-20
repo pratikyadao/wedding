@@ -1,0 +1,1907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shantanu &amp; Diptiksha | Wedding Invitation</title>
+
+  <!-- Google Fonts: Great Vibes, Alex Brush, Cormorant Garamond, Montserrat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tone.js for gentle synthesized wedding sitar/flute/chime ambiance -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            script: ['"Great Vibes"', '"Alex Brush"', 'cursive'],
+            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['"Montserrat"', 'sans-serif'],
+          },
+          colors: {
+            sageSplash: '#dce8dc',
+            sageGlow: '#e8f1e8',
+            sageLeaf: '#7b9e7e',
+            sageSoft: '#a5c2a7',
+            oliveCharcoal: '#3f4a3c',
+            sageMuted: '#6c786a',
+            ivoryCream: '#fdfbf7',
+            warmIvory: '#faf7f2',
+            dustyRose: '#c45c6c',
+            crimsonRose: '#b55464',
+            royalCrimson: '#8a1d3a',
+            taupeGray: '#6e655f',
+            goldTan: '#9c856c',
+            cocoaBrown: '#6b4c35',
+            marigoldGold: '#f5b82e',
+            emeraldDeep: '#164840',
+            royalMidnight: '#131a2e',
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      background-color: #f3efe8;
+      color: #4a423d;
+      overflow-x: hidden;
+    }
+
+    /* Subtle watercolor paper grain texture */
+    .watercolor-paper {
+      background-color: #fdfbf7;
+      background-image:
+        radial-gradient(at 12% 10%, rgba(196, 92, 108, 0.045) 0px, transparent 52%),
+        radial-gradient(at 88% 18%, rgba(165, 194, 167, 0.11) 0px, transparent 54%),
+        radial-gradient(at 18% 72%, rgba(229, 169, 60, 0.045) 0px, transparent 50%),
+        radial-gradient(at 84% 84%, rgba(196, 92, 108, 0.05) 0px, transparent 52%);
+    }
+
+    /* =========================================================
+       ENVELOPE SPLASH SCREEN
+       ========================================================= */
+    #splash-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      background: radial-gradient(circle at 50% 44%, #e8f1e8 0%, #dce8dc 62%, #cfe0cf 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.9s ease;
+    }
+
+    #splash-screen.opened-away {
+      opacity: 0;
+      transform: scale(1.06);
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .envelope-stage {
+      perspective: 1200px;
+      cursor: pointer;
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .envelope-stage:hover {
+      transform: translateY(-4px) scale(1.015);
+    }
+
+    .envelope-box {
+      position: relative;
+      width: 260px;
+      height: 250px;
+      background: linear-gradient(155deg, #ffffff 0%, #fbf9f4 65%, #f4efe6 100%);
+      border-radius: 8px;
+      box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.08),
+        0 4px 14px rgba(63, 74, 60, 0.07),
+        inset 0 0 0 1px rgba(123, 158, 126, 0.22);
+    }
+
+    .envelope-letter {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 16px;
+      height: 205px;
+      background: #fdfbf7;
+      border-radius: 6px;
+      border: 1px solid rgba(196, 92, 108, 0.25);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      text-align: center;
+      z-index: 2;
+      transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .envelope-stage.is-opening .envelope-letter {
+      transform: translateY(-64px);
+    }
+
+    .envelope-flap-top {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 142px;
+      z-index: 5;
+      transform-origin: top center;
+      transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+      filter: drop-shadow(0 4px 7px rgba(63, 74, 60, 0.09));
+    }
+
+    .envelope-stage.is-opening .envelope-flap-top {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+
+    .wax-seal-btn {
+      position: absolute;
+      top: 126px;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 58px;
+      height: 58px;
+      border-radius: 9999px;
+      background: radial-gradient(circle at 32% 28%, #f3c669 0%, #e5a93c 52%, #c8861d 100%);
+      box-shadow:
+        0 6px 16px rgba(145, 93, 12, 0.34),
+        inset 0 2px 3px rgba(255, 248, 225, 0.75),
+        inset 0 -3px 5px rgba(138, 86, 8, 0.55);
+      border: 2px solid rgba(255, 238, 194, 0.65);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 8;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .wax-seal-btn::after {
+      content: '';
+      position: absolute;
+      inset: 5px;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 246, 218, 0.68);
+    }
+
+    @keyframes sealGentlePulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.055); }
+    }
+
+    .seal-pulse {
+      animation: sealGentlePulse 2.5s infinite ease-in-out;
+    }
+
+    .envelope-stage.is-opening .wax-seal-btn {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.75);
+    }
+
+    #petals-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 55;
+    }
+
+    /* =========================================================
+       SCRATCH CARD
+       ========================================================= */
+    .scratch-container {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      height: 122px;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #ffffff 0%, #fcf9f3 100%);
+      border: 1px solid #e6d5b8;
+      box-shadow: 0 10px 28px rgba(156, 133, 108, 0.14);
+      overflow: hidden;
+      user-select: none;
+      touch-action: none;
+    }
+
+    #scratch-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      cursor: grab;
+      transition: opacity 0.7s ease;
+    }
+
+    #scratch-canvas:active {
+      cursor: grabbing;
+    }
+
+    #scratch-canvas.revealed {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* =========================================================
+       EVENT CARDS & COUNTDOWN
+       ========================================================= */
+    .countdown-pill {
+      width: 72px;
+      height: 92px;
+      border-radius: 14px;
+      background: #ffffff;
+      border: 1px solid #efe9e0;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .event-schedule-card {
+      position: relative;
+      width: 100%;
+      max-width: 510px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.14);
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+    }
+
+    .event-schedule-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 22px 46px rgba(0, 0, 0, 0.18);
+    }
+
+    /* Dress Code Cards */
+    .dress-code-card {
+      background: #ffffff;
+      border: 1px solid #eee5d8;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(140, 120, 100, 0.07);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .dress-code-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 26px rgba(140, 120, 100, 0.12);
+    }
+
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .gallery-slide-img {
+      transition: transform 0.4s ease, opacity 0.4s ease;
+    }
+
+    /* Continuous Film Roll Marquee */
+    @keyframes film-roll-marquee {
+      0% {
+        transform: translate3d(0, 0, 0);
+      }
+      100% {
+        transform: translate3d(-100%, 0, 0);
+      }
+    }
+    .animate-film-roll {
+      animation: film-roll-marquee var(--marquee-duration, 50s) linear infinite;
+      will-change: transform;
+    }
+    .film-roll-container:hover .animate-film-roll {
+      animation-play-state: paused;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .animate-film-roll {
+        animation-play-state: paused;
+      }
+    }
+  </style>
+</head>
+<body class="antialiased">
+
+  <canvas id="petals-canvas"></canvas>
+
+  <div id="wedding-audio-bar" class="fixed bottom-5 right-4 z-50 flex items-center gap-2 bg-[#faf7f2]/95 backdrop-blur-md border border-[#d4af37]/50 shadow-[0_8px_25px_rgba(0,0,0,0.15)] rounded-full pl-3.5 pr-2 py-1.5 transition-all">
+    <button id="music-toggle" type="button" class="flex items-center gap-2 cursor-pointer focus:outline-none" title="Toggle background music">
+      <span id="music-soundwave" class="flex items-end gap-0.5 h-4 w-3.5">
+        <span class="w-1 bg-[#c59b5f] rounded-full animate-pulse" style="height: 70%;"></span>
+        <span class="w-1 bg-[#1b382b] rounded-full animate-pulse" style="height: 100%;"></span>
+        <span class="w-1 bg-[#c59b5f] rounded-full animate-pulse" style="height: 45%;"></span>
+      </span>
+      <div class="flex flex-col text-left pr-1 max-w-[135px] sm:max-w-[170px]">
+        <span class="font-serif text-[11px] text-[#333333] font-semibold truncate leading-tight">Jashn-E-Bahaaraa</span>
+        <span class="font-sans text-[8.5px] text-[#c59b5f] tracking-wider truncate leading-tight">A.R. Rahman • Flute</span>
+      </div>
+    </button>
+    <a href="https://open.spotify.com/track/5EzxMOsEbQFHDhLu2aarFY" target="_blank" rel="noopener noreferrer" title="Listen on Spotify" class="w-7 h-7 rounded-full bg-[#1DB954]/15 hover:bg-[#1DB954] text-[#1DB954] hover:text-white flex items-center justify-center transition-colors">
+      <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+    </a>
+    <button id="music-play-btn" type="button" class="w-8 h-8 rounded-full bg-[#1b382b] text-[#faf7f2] hover:bg-[#1b382b]/90 flex items-center justify-center transition-all active:scale-90" aria-label="Toggle Play">
+      <svg id="music-icon-on" class="w-4 h-4 text-[#d4af37]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+      <svg id="music-icon-off" class="w-4 h-4 text-white/70 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+    </button>
+  </div>
+
+  <audio id="wedding-bg-audio" loop preload="auto">
+    <source src="./public/audio/jashn-e-bahaaraa.mp3" type="audio/mpeg">
+    <source src="./audio/jashn-e-bahaaraa.mp3" type="audio/mpeg">
+    <source src="/audio/jashn-e-bahaaraa.mp3" type="audio/mpeg">
+    <source src="./public/audio/jashn-e-bahaaraa.wav" type="audio/wav">
+    <source src="./audio/jashn-e-bahaaraa.wav" type="audio/wav">
+  </audio>
+
+  <!-- =========================================================
+       1. ENVELOPE SPLASH SCREEN
+       ========================================================= -->
+  <div id="splash-screen" role="dialog" aria-modal="true" aria-label="Wedding Invitation Envelope">
+    <div id="envelope-trigger" class="envelope-stage select-none mb-8" role="button" tabindex="0" aria-label="Tap the envelope to open your invitation">
+      <div class="envelope-box">
+        <div class="envelope-letter">
+          <span class="font-serif text-[10px] tracking-[0.16em] text-crimsonRose uppercase mb-1">|| श्री गणेशाय नमः ||</span>
+          <span class="font-script text-[30px] text-dustyRose leading-none">Shantanu &amp; Diptiksha</span>
+          <span class="font-serif italic text-xs text-taupeGray mt-1.5">28th December 2026</span>
+        </div>
+
+        <svg class="absolute inset-0 w-full h-full z-3 rounded-[8px]" viewBox="0 0 256 248" preserveAspectRatio="none">
+          <defs>
+            <pattern id="botanical-envelope-pattern" x="0" y="0" width="64" height="64" patternUnits="userSpaceOnUse">
+              <g fill="none">
+                <path d="M8,56 Q22,38 32,22" stroke="#7b9e7e" stroke-width="1.1" stroke-linecap="round" opacity="0.65"/>
+                <path d="M56,56 Q42,38 32,22" stroke="#7b9e7e" stroke-width="1.1" stroke-linecap="round" opacity="0.65"/>
+                <path d="M18,44 C11,41 10,35 16,34 C20,35 20,40 18,44 Z" fill="#a5c2a7" opacity="0.72"/>
+                <path d="M46,44 C53,41 54,35 48,34 C44,35 44,40 46,44 Z" fill="#a5c2a7" opacity="0.72"/>
+                <path d="M25,31 C19,27 20,21 25,22 C28,24 27,28 25,31 Z" fill="#7b9e7e" opacity="0.58"/>
+                <path d="M39,31 C45,27 44,21 39,22 C36,24 37,28 39,31 Z" fill="#7b9e7e" opacity="0.58"/>
+                <g transform="translate(32, 16)">
+                  <circle cx="0" cy="-5.5" r="3.4" fill="#ffffff" stroke="#a5c2a7" stroke-width="0.6"/>
+                  <circle cx="5.2" cy="-1.7" r="3.4" fill="#ffffff" stroke="#a5c2a7" stroke-width="0.6"/>
+                  <circle cx="3.2" cy="4.5" r="3.4" fill="#ffffff" stroke="#a5c2a7" stroke-width="0.6"/>
+                  <circle cx="-3.2" cy="4.5" r="3.4" fill="#ffffff" stroke="#a5c2a7" stroke-width="0.6"/>
+                  <circle cx="-5.2" cy="-1.7" r="3.4" fill="#ffffff" stroke="#a5c2a7" stroke-width="0.6"/>
+                  <circle cx="0" cy="0" r="2.1" fill="#d9a441" opacity="0.8"/>
+                </g>
+                <circle cx="8" cy="56" r="3" fill="#ffffff" stroke="#a5c2a7" stroke-width="0.6"/>
+                <circle cx="56" cy="56" r="3" fill="#ffffff" stroke="#a5c2a7" stroke-width="0.6"/>
+              </g>
+            </pattern>
+            <linearGradient id="envSidePocket" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#f7faf6"/>
+              <stop offset="100%" stop-color="#edf3ed"/>
+            </linearGradient>
+            <linearGradient id="envBottomPocket" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f5f9f4"/>
+              <stop offset="100%" stop-color="#e9f1e9"/>
+            </linearGradient>
+          </defs>
+
+          <polygon points="0,0 132,126 0,248" fill="url(#envSidePocket)" stroke="rgba(123,158,126,0.28)" stroke-width="1"/>
+          <polygon points="0,0 132,126 0,248" fill="url(#botanical-envelope-pattern)"/>
+
+          <polygon points="256,0 124,126 256,248" fill="url(#envSidePocket)" stroke="rgba(123,158,126,0.28)" stroke-width="1"/>
+          <polygon points="256,0 124,126 256,248" fill="url(#botanical-envelope-pattern)"/>
+
+          <polygon points="0,248 128,116 256,248" fill="url(#envBottomPocket)" stroke="rgba(123,158,126,0.34)" stroke-width="1.1"/>
+          <polygon points="0,248 128,116 256,248" fill="url(#botanical-envelope-pattern)"/>
+        </svg>
+
+        <svg class="envelope-flap-top" viewBox="0 0 256 142" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="envTopFlap" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffffff"/>
+              <stop offset="100%" stop-color="#eff5ef"/>
+            </linearGradient>
+          </defs>
+          <path d="M0,0 L256,0 L136,130 Q128,138 120,130 Z" fill="url(#envTopFlap)" stroke="rgba(123,158,126,0.34)" stroke-width="1.1"/>
+        </svg>
+
+        <div class="wax-seal-btn seal-pulse">
+          <span class="font-serif font-semibold text-[15px] tracking-wider text-[#fffdf7] drop-shadow-sm relative z-10">
+            S&amp;D
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center px-6">
+      <h1 class="font-script text-[42px] sm:text-[46px] text-oliveCharcoal leading-tight mb-1">
+        You're Invited
+      </h1>
+      <p class="font-serif text-[13.5px] sm:text-[14.5px] text-sageMuted tracking-wide">
+        Tap the envelope to open your invitation
+      </p>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       MAIN LUXURY WEDDING INVITATION CONTAINER
+       ========================================================= -->
+  <main class="w-full max-w-[560px] mx-auto bg-ivoryCream shadow-[0_20px_70px_rgba(60,48,40,0.12)] overflow-hidden relative">
+
+    <!-- =========================================================
+         SECTION 1: HERO INVITATION CARD
+         ========================================================= -->
+    <section class="relative watercolor-paper pt-9 sm:pt-12 pb-0 text-center overflow-hidden">
+
+      <!-- Left Foliage -->
+      <svg class="absolute top-0 left-0 w-32 sm:w-44 h-[470px] pointer-events-none select-none opacity-85" viewBox="0 0 180 480" fill="none">
+        <path d="M-18,16 C35,10 78,36 102,82 C58,68 18,46 -18,16 Z" fill="#a5c2a7" opacity="0.68"/>
+        <path d="M-12,56 C42,54 78,82 92,126 C52,108 16,86 -12,56 Z" fill="#89ad8c" opacity="0.58"/>
+        <path d="M-20,108 C28,110 64,138 74,186 C40,164 8,140 -20,108 Z" fill="#bad1bc" opacity="0.68"/>
+        <path d="M-15,175 C32,178 65,205 72,250 C40,228 10,204 -15,175 Z" fill="#9ab89c" opacity="0.55"/>
+        <path d="M-18,248 C26,252 56,280 62,324 C32,302 6,278 -18,248 Z" fill="#b7cfb9" opacity="0.62"/>
+        <path d="M8,-10 C30,28 38,68 22,110 C8,74 2,36 8,-10 Z" fill="#7b9e7e" opacity="0.48"/>
+        <g transform="translate(36, 52)">
+          <circle cx="0" cy="-14" r="12" fill="#f5b3be" opacity="0.82"/>
+          <circle cx="13" cy="-4" r="12" fill="#ee9aa8" opacity="0.78"/>
+          <circle cx="8" cy="11" r="12" fill="#f7c4cd" opacity="0.85"/>
+          <circle cx="-8" cy="11" r="12" fill="#ea8d9d" opacity="0.76"/>
+          <circle cx="-13" cy="-4" r="12" fill="#f5b3be" opacity="0.82"/>
+          <circle cx="0" cy="0" r="5" fill="#e5a93c" opacity="0.85"/>
+        </g>
+        <g transform="translate(22, 146) scale(0.76)">
+          <circle cx="0" cy="-14" r="11" fill="#f8cad2" opacity="0.85"/>
+          <circle cx="13" cy="-4" r="11" fill="#efa0ae" opacity="0.8"/>
+          <circle cx="8" cy="11" r="11" fill="#f5b3be" opacity="0.82"/>
+          <circle cx="-8" cy="11" r="11" fill="#efa0ae" opacity="0.8"/>
+          <circle cx="-13" cy="-4" r="11" fill="#f8cad2" opacity="0.85"/>
+          <circle cx="0" cy="0" r="4.5" fill="#c45c6c"/>
+        </g>
+      </svg>
+
+      <!-- Right Foliage -->
+      <svg class="absolute top-0 right-0 w-32 sm:w-44 h-[470px] pointer-events-none select-none opacity-85 scale-x-[-1]" viewBox="0 0 180 480" fill="none">
+        <path d="M-18,16 C35,10 78,36 102,82 C58,68 18,46 -18,16 Z" fill="#a5c2a7" opacity="0.68"/>
+        <path d="M-12,56 C42,54 78,82 92,126 C52,108 16,86 -12,56 Z" fill="#89ad8c" opacity="0.58"/>
+        <path d="M-20,108 C28,110 64,138 74,186 C40,164 8,140 -20,108 Z" fill="#bad1bc" opacity="0.68"/>
+        <path d="M-15,175 C32,178 65,205 72,250 C40,228 10,204 -15,175 Z" fill="#9ab89c" opacity="0.55"/>
+        <path d="M-18,248 C26,252 56,280 62,324 C32,302 6,278 -18,248 Z" fill="#b7cfb9" opacity="0.62"/>
+        <path d="M8,-10 C30,28 38,68 22,110 C8,74 2,36 8,-10 Z" fill="#7b9e7e" opacity="0.48"/>
+        <g transform="translate(36, 52)">
+          <circle cx="0" cy="-14" r="12" fill="#f5b3be" opacity="0.82"/>
+          <circle cx="13" cy="-4" r="12" fill="#ee9aa8" opacity="0.78"/>
+          <circle cx="8" cy="11" r="12" fill="#f7c4cd" opacity="0.85"/>
+          <circle cx="-8" cy="11" r="12" fill="#ea8d9d" opacity="0.76"/>
+          <circle cx="-13" cy="-4" r="12" fill="#f5b3be" opacity="0.82"/>
+          <circle cx="0" cy="0" r="5" fill="#e5a93c" opacity="0.85"/>
+        </g>
+      </svg>
+
+      <!-- Center: Lord Ganesha -->
+      <div class="relative z-10 flex flex-col items-center px-6">
+        <svg class="w-[56px] h-[60px] mb-1.5 drop-shadow-sm" viewBox="0 0 80 86" fill="none">
+          <circle cx="40" cy="34" r="24" fill="#fbe8be" opacity="0.65"/>
+          <circle cx="40" cy="34" r="20" stroke="#e5a93c" stroke-width="1" stroke-dasharray="2 2"/>
+          <path d="M31 19 L40 7 L49 19 Z" fill="#e5a93c"/>
+          <path d="M33 19 L40 11 L47 19 Z" fill="#c45c6c"/>
+          <circle cx="40" cy="7" r="2.2" fill="#e5a93c"/>
+          <ellipse cx="27" cy="29" rx="5.5" ry="7.5" fill="#e07a5f" opacity="0.9"/>
+          <ellipse cx="53" cy="29" rx="5.5" ry="7.5" fill="#e07a5f" opacity="0.9"/>
+          <circle cx="40" cy="28" r="10.5" fill="#e68a6e"/>
+          <path d="M40 28 Q40 38 35 41 Q32 42 33 38" stroke="#c85a42" stroke-width="3.4" stroke-linecap="round" fill="none"/>
+          <path d="M40 21 L40 24.5" stroke="#b55464" stroke-width="1.6" stroke-linecap="round"/>
+          <ellipse cx="40" cy="48" rx="13" ry="11" fill="#e68a6e"/>
+          <path d="M26 50 Q40 58 54 50 L50 61 L30 61 Z" fill="#c45c6c"/>
+          <path d="M31 44 Q40 50 49 44" stroke="#e5a93c" stroke-width="2" fill="none"/>
+          <path d="M22 65 Q31 58 40 65 Q49 58 58 65 Q49 71 40 71 Q31 71 22 65 Z" fill="#f29aa8"/>
+          <path d="M28 67 Q40 61 52 67 Q46 73 40 73 Q34 73 28 67 Z" fill="#c45c6c"/>
+        </svg>
+
+        <p class="font-serif font-semibold text-[14px] text-crimsonRose tracking-[0.06em] mb-3">
+          || श्री गणेशाय नमः ||
+        </p>
+
+        <p class="font-serif text-[15px] sm:text-[16px] leading-relaxed text-taupeGray max-w-[360px] mx-auto mb-3">
+          With the blessings of our families and the grace of the Almighty,<br />
+          we cordially invite you to rejoice at the beginning of our forever<br />
+          and celebrate the wedding ceremony of
+        </p>
+
+        <!-- Groom -->
+        <h2 class="font-script text-[64px] sm:text-[72px] text-dustyRose leading-[0.95] mt-1 mb-1">
+          Shantanu
+        </h2>
+        <p class="font-serif text-[14px] sm:text-[15px] leading-snug text-taupeGray">
+          S/o Mr. Sunil Sawant<br />
+          &amp; Mrs. Nilima Sawant
+        </p>
+
+        <p class="font-serif italic text-[18px] text-crimsonRose my-2.5">
+          and
+        </p>
+
+        <!-- Bride -->
+        <h2 class="font-script text-[64px] sm:text-[72px] text-dustyRose leading-[0.95] mb-1">
+          Diptiksha
+        </h2>
+        <p class="font-serif text-[14px] sm:text-[15px] leading-snug text-taupeGray mb-6">
+          D/o Mr. Harish Tapase<br />
+          &amp; Mrs. Yogita Tapase
+        </p>
+      </div>
+
+      <!-- Palace SVG Illustration -->
+      <div class="w-full mt-2 select-none">
+        <svg class="w-full h-auto block" viewBox="0 0 560 155" preserveAspectRatio="xMidYMax slice" fill="none">
+          <defs>
+            <linearGradient id="skyHorizonGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#fdfbf7" stop-opacity="0"/>
+              <stop offset="55%" stop-color="#f7efe4" stop-opacity="0.7"/>
+              <stop offset="100%" stop-color="#efe3d3" stop-opacity="1"/>
+            </linearGradient>
+            <linearGradient id="palaceGoldGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#e99a44"/>
+              <stop offset="100%" stop-color="#c96e32"/>
+            </linearGradient>
+            <linearGradient id="terraceStoneGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#e3c9b2"/>
+              <stop offset="100%" stop-color="#cca88c"/>
+            </linearGradient>
+          </defs>
+
+          <rect x="0" y="0" width="560" height="155" fill="url(#skyHorizonGrad)"/>
+
+          <g opacity="0.55">
+            <path d="M40 92 Q25 58 6 52 Q28 50 44 76 Z" fill="#89ad8c"/>
+            <path d="M44 92 Q48 54 68 44 Q58 64 48 88 Z" fill="#7b9e7e"/>
+            <path d="M515 95 Q500 62 482 55 Q504 54 518 80 Z" fill="#89ad8c"/>
+            <path d="M518 95 Q526 58 546 48 Q536 68 522 90 Z" fill="#7b9e7e"/>
+          </g>
+
+          <g transform="translate(82, 26)">
+            <path d="M46 14 Q52 2 58 14 L66 42 L38 42 Z" fill="url(#palaceGoldGrad)"/>
+            <line x1="52" y1="0" x2="52" y2="8" stroke="#c96e32" stroke-width="1.5"/>
+            <circle cx="52" cy="7" r="2" fill="#f3c669"/>
+            <path d="M18 32 Q24 22 30 32 L33 48 L15 48 Z" fill="#df8b3c"/>
+            <path d="M74 32 Q80 22 86 32 L89 48 L71 48 Z" fill="#df8b3c"/>
+            <rect x="12" y="42" width="80" height="48" rx="2" fill="#e59c54"/>
+            <path d="M22 90 L22 62 Q28 54 34 62 L34 90 Z" fill="#fff2cc"/>
+            <path d="M44 90 L44 58 Q52 48 60 58 L60 90 Z" fill="#fff2cc"/>
+            <path d="M70 90 L70 62 Q76 54 82 62 L82 90 Z" fill="#fff2cc"/>
+            <path d="M14 45 Q32 53 52 45 Q72 53 90 45" stroke="#e5a93c" stroke-width="2" fill="none"/>
+          </g>
+
+          <g transform="translate(365, 58)">
+            <ellipse cx="82" cy="54" rx="54" ry="11" fill="#cde2e8" opacity="0.75"/>
+            <path d="M62 52 C62 45 71 45 74 51 C76 44 73 39 76 38 C78 38 78 42 76 46 C78 50 75 54 67 54 Z" fill="#ffffff" stroke="#b6ccd4" stroke-width="0.8"/>
+            <path d="M98 52 C98 45 89 45 86 51 C84 44 87 39 84 38 C82 38 82 42 84 46 C82 50 85 54 93 54 Z" fill="#ffffff" stroke="#b6ccd4" stroke-width="0.8"/>
+            <g transform="translate(8, 12)">
+              <circle cx="16" cy="30" r="12" stroke="#6d9db5" stroke-width="2.2" fill="rgba(255,255,255,0.4)"/>
+              <circle cx="16" cy="30" r="2" fill="#6d9db5"/>
+              <circle cx="62" cy="30" r="12" stroke="#6d9db5" stroke-width="2.2" fill="rgba(255,255,255,0.4)"/>
+              <circle cx="62" cy="30" r="2" fill="#6d9db5"/>
+              <path d="M16 30 L28 16 L46 16 L62 30 M28 16 L34 30 L50 30 L46 16 M46 16 L54 10" stroke="#78aac2" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="25" y1="13" x2="31" y2="13" stroke="#8b6952" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="43" y1="13" x2="49" y2="13" stroke="#8b6952" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M52 10 Q56 8 58 11" stroke="#6d9db5" stroke-width="2" fill="none"/>
+              <rect x="57" y="13" width="10" height="8" rx="1.5" fill="#c79c6e"/>
+              <circle cx="59" cy="12" r="2.8" fill="#f49aa8"/>
+              <circle cx="63" cy="11" r="3" fill="#f7c4cd"/>
+              <circle cx="66" cy="12.5" r="2.5" fill="#e5a93c"/>
+            </g>
+          </g>
+
+          <rect x="0" y="108" width="560" height="6" fill="#efe2d3" stroke="#d5bfa9" stroke-width="0.8"/>
+          <rect x="0" y="134" width="560" height="21" fill="url(#terraceStoneGrad)"/>
+          <g fill="#f7eee3" stroke="#d4bea8" stroke-width="0.8">
+            <rect x="14" y="114" width="7" height="20" rx="2"/>
+            <rect x="38" y="114" width="7" height="20" rx="2"/>
+            <rect x="62" y="114" width="7" height="20" rx="2"/>
+            <rect x="86" y="114" width="7" height="20" rx="2"/>
+            <rect x="110" y="114" width="7" height="20" rx="2"/>
+            <rect x="134" y="114" width="7" height="20" rx="2"/>
+            <rect x="158" y="114" width="7" height="20" rx="2"/>
+            <rect x="182" y="114" width="7" height="20" rx="2"/>
+            <rect x="206" y="114" width="7" height="20" rx="2"/>
+            <rect x="230" y="114" width="7" height="20" rx="2"/>
+            <rect x="254" y="114" width="7" height="20" rx="2"/>
+            <rect x="278" y="114" width="7" height="20" rx="2"/>
+            <rect x="302" y="114" width="7" height="20" rx="2"/>
+            <rect x="326" y="114" width="7" height="20" rx="2"/>
+            <rect x="350" y="114" width="7" height="20" rx="2"/>
+            <rect x="374" y="114" width="7" height="20" rx="2"/>
+            <rect x="398" y="114" width="7" height="20" rx="2"/>
+            <rect x="422" y="114" width="7" height="20" rx="2"/>
+            <rect x="446" y="114" width="7" height="20" rx="2"/>
+            <rect x="470" y="114" width="7" height="20" rx="2"/>
+            <rect x="494" y="114" width="7" height="20" rx="2"/>
+            <rect x="518" y="114" width="7" height="20" rx="2"/>
+            <rect x="542" y="114" width="7" height="20" rx="2"/>
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SECTION 2: SCRATCH CARD ("SAVE THE DATE") & LIVE COUNTDOWN
+         ========================================================= -->
+    <section class="bg-warmIvory px-5 sm:px-8 pt-10 pb-12 text-center border-b border-[#efe8de]/70">
+      <div class="flex justify-center mb-8">
+        <div class="scratch-container" id="scratch-box">
+          <div class="absolute inset-0 flex flex-col items-center justify-center px-4">
+            <span class="font-sans text-[11px] font-medium uppercase tracking-[3px] text-goldTan mb-1">
+              SAVE THE DATE
+            </span>
+            <p class="font-script text-[36px] sm:text-[42px] text-dustyRose leading-none">
+              28th December 2026
+            </p>
+          </div>
+          <canvas id="scratch-canvas"></canvas>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-center gap-3 sm:gap-4">
+        <div class="countdown-pill">
+          <span id="cd-days" class="font-serif font-light text-[32px] sm:text-[36px] text-[#4a423d] leading-none mb-1.5">--</span>
+          <span class="font-sans text-[9.5px] font-medium uppercase tracking-[0.16em] text-goldTan">DAYS</span>
+        </div>
+
+        <div class="countdown-pill">
+          <span id="cd-hours" class="font-serif font-light text-[32px] sm:text-[36px] text-[#4a423d] leading-none mb-1.5">--</span>
+          <span class="font-sans text-[9.5px] font-medium uppercase tracking-[0.16em] text-goldTan">HOURS</span>
+        </div>
+
+        <div class="countdown-pill">
+          <span id="cd-minutes" class="font-serif font-light text-[32px] sm:text-[36px] text-[#4a423d] leading-none mb-1.5">--</span>
+          <span class="font-sans text-[9.5px] font-medium uppercase tracking-[0.16em] text-goldTan">MINUTES</span>
+        </div>
+
+        <div class="countdown-pill">
+          <span id="cd-seconds" class="font-serif font-light text-[32px] sm:text-[36px] text-[#4a423d] leading-none mb-1.5">--</span>
+          <span class="font-sans text-[9.5px] font-medium uppercase tracking-[0.16em] text-goldTan">SECONDS</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SECTION 3: "Events Schedule" (4 Detailed Cards with Avatars)
+         ========================================================= -->
+    <section class="watercolor-paper px-4 sm:px-7 py-12">
+      <div class="text-center mb-8 reveal-on-scroll">
+        <svg class="w-24 h-5 mx-auto mb-1 opacity-75" viewBox="0 0 120 24" fill="none">
+          <path d="M12 12 Q36 12 52 12 M68 12 Q84 12 108 12" stroke="#c45c6c" stroke-width="0.9"/>
+          <circle cx="60" cy="12" r="3" fill="#c45c6c"/>
+          <circle cx="53" cy="12" r="1.8" fill="#e5a93c"/>
+          <circle cx="67" cy="12" r="1.8" fill="#e5a93c"/>
+        </svg>
+        <h2 class="font-script text-[46px] sm:text-[50px] text-dustyRose leading-tight">
+          Events Schedule
+        </h2>
+        <p class="font-serif italic text-sm text-taupeGray mt-1">
+          Join us as we celebrate our love across four beautiful ceremonies
+        </p>
+      </div>
+
+      <div class="flex flex-col items-center gap-7">
+
+        <!-- =====================================================
+             CARD 1: CARNIVAL & FLOWER HALDI
+             ===================================================== -->
+        <article class="event-schedule-card reveal-on-scroll" style="background: linear-gradient(135deg, #e89c14 0%, #f5b82e 52%, #d9820b 100%);">
+          <!-- Marigold Toran & Mango Leaves -->
+          <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 510 285" preserveAspectRatio="none">
+            <g>
+              <path d="M10 0 L6 24 L14 24 Z M34 0 L30 24 L38 24 Z M58 0 L54 24 L62 24 Z M82 0 L78 24 L86 24 Z M106 0 L102 24 L110 24 Z M130 0 L126 24 L134 24 Z M154 0 L150 24 L158 24 Z M178 0 L174 24 L182 24 Z M202 0 L198 24 L206 24 Z M226 0 L222 24 L230 24 Z M250 0 L246 24 L254 24 Z M274 0 L270 24 L278 24 Z M298 0 L294 24 L302 24 Z M322 0 L318 24 L326 24 Z M346 0 L342 24 L350 24 Z M370 0 L366 24 L374 24 Z M394 0 L390 24 L398 24 Z M418 0 L414 24 L422 24 Z M442 0 L438 24 L446 24 Z M466 0 L462 24 L470 24 Z M490 0 L486 24 L494 24 Z" fill="#2b7a3d"/>
+              <path d="M0 8 Q64 36 128 8 Q192 36 256 8 Q320 36 384 8 Q448 36 510 8" stroke="#e85d04" stroke-width="9" stroke-dasharray="2 7" stroke-linecap="round" fill="none"/>
+              <path d="M0 8 Q64 36 128 8 Q192 36 256 8 Q320 36 384 8 Q448 36 510 8" stroke="#ffea00" stroke-width="5" stroke-dasharray="2 7" stroke-linecap="round" fill="none"/>
+            </g>
+            <circle cx="240" cy="88" r="3" fill="#fff3b0" opacity="0.7"/>
+            <circle cx="465" cy="110" r="4" fill="#fff3b0" opacity="0.6"/>
+          </svg>
+
+          <div class="relative z-10 grid grid-cols-12 items-center min-h-[285px] px-4 sm:px-6 py-5 gap-3">
+            <!-- Left Side: Haldi Avatar Illustration -->
+            <div class="col-span-5 flex justify-center items-center">
+              <div class="relative w-[150px] sm:w-[172px] h-[250px] sm:h-[270px] rounded-[18px] overflow-hidden shadow-[0_12px_28px_rgba(145,78,0,0.38)] border-2 border-white/80 bg-white/20 group">
+                <img
+                  src="./public/avatar-haldi.jpg"
+                  onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='./avatar-haldi.jpg';}else if(this.dataset.tried==='1'){this.dataset.tried='2';this.src='/avatar-haldi.jpg';}"
+                  alt="Carnival & Flower Haldi Couple Avatar"
+                  class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none"></div>
+              </div>
+            </div>
+
+            <!-- Right Side: Details -->
+            <div class="col-span-7 text-center sm:text-right pl-1 pr-1">
+              <span class="inline-block px-2.5 py-0.5 rounded-full bg-white/25 text-white font-sans text-[9px] font-semibold uppercase tracking-[0.16em] mb-1.5 backdrop-blur-xs">
+                CEREMONY 01
+              </span>
+              <h3 class="font-script text-[38px] sm:text-[44px] text-white leading-none mb-1 drop-shadow-sm">
+                Carnival &amp; Haldi
+              </h3>
+              <p class="font-serif italic text-[13px] sm:text-[14px] text-[#fff8e7] leading-snug mb-3">
+                A joyful carnival of games, flower Haldi &amp; colors
+              </p>
+
+              <div class="space-y-2 text-[13px] sm:text-[14px]">
+                <div>
+                  <span class="block font-sans text-[9px] font-semibold uppercase tracking-[0.18em] text-[#fff3b0]">DATE</span>
+                  <span class="font-serif text-white font-semibold">SUN, Dec 27, 2026</span>
+                </div>
+                <div>
+                  <span class="block font-sans text-[9px] font-semibold uppercase tracking-[0.18em] text-[#fff3b0]">TIME</span>
+                  <span class="font-serif text-white font-semibold">12:00 PM onwards</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- =====================================================
+             CARD 2: SANGEET
+             ===================================================== -->
+        <article class="event-schedule-card reveal-on-scroll" style="background: linear-gradient(135deg, #0c101d 0%, #131a2e 55%, #171f36 100%);">
+          <!-- Twinkling golden stars SVG -->
+          <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 510 285" preserveAspectRatio="none">
+            <circle cx="60" cy="36" r="1.5" fill="#ffe8a3" opacity="0.85"/>
+            <circle cx="145" cy="24" r="1.8" fill="#ffffff" opacity="0.7"/>
+            <circle cx="220" cy="48" r="1.2" fill="#ffe8a3" opacity="0.9"/>
+            <circle cx="290" cy="22" r="2" fill="#ffd97d" opacity="0.8"/>
+            <circle cx="375" cy="35" r="1.4" fill="#ffffff" opacity="0.75"/>
+            <circle cx="445" cy="28" r="1.7" fill="#ffe8a3" opacity="0.85"/>
+            <circle cx="480" cy="75" r="1.3" fill="#ffffff" opacity="0.65"/>
+            <path d="M-8,38 Q35,34 68,12" stroke="#6b4e57" stroke-width="2" fill="none"/>
+            <circle cx="26" cy="32" r="6" fill="#f7b7c6" opacity="0.78"/>
+            <circle cx="46" cy="24" r="5" fill="#fad2dc" opacity="0.82"/>
+            <circle cx="64" cy="14" r="4.5" fill="#f29bb0" opacity="0.75"/>
+          </svg>
+
+          <div class="relative z-10 grid grid-cols-12 items-center min-h-[285px] px-4 sm:px-6 py-5 gap-3">
+            <!-- Left Side: Sangeet Avatar Illustration -->
+            <div class="col-span-5 flex justify-center items-center">
+              <div class="relative w-[150px] sm:w-[172px] h-[250px] sm:h-[270px] rounded-[18px] overflow-hidden shadow-[0_12px_28px_rgba(0,0,0,0.48)] border-2 border-white/80 bg-white/10 group">
+                <img
+                  src="./public/avatar-sangeet.jpg"
+                  onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='./avatar-sangeet.jpg';}else if(this.dataset.tried==='1'){this.dataset.tried='2';this.src='/avatar-sangeet.jpg';}"
+                  alt="Sangeet Couple Avatar"
+                  class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none"></div>
+              </div>
+            </div>
+
+            <!-- Right Side: Details -->
+            <div class="col-span-7 text-center sm:text-right pl-1 pr-1">
+              <span class="inline-block px-2.5 py-0.5 rounded-full bg-white/20 text-[#d8b47c] font-sans text-[9px] font-semibold uppercase tracking-[0.16em] mb-1.5 backdrop-blur-xs">
+                CEREMONY 02
+              </span>
+              <h3 class="font-script text-[42px] sm:text-[48px] text-white leading-none mb-1">
+                Sangeet
+              </h3>
+              <p class="font-serif italic text-[13.5px] sm:text-[14.5px] text-[#e2e6f0] leading-snug mb-3">
+                A musical night of dance, beats &amp; celebration
+              </p>
+
+              <div class="space-y-2 text-[13.5px] sm:text-[14.5px]">
+                <div>
+                  <span class="block font-sans text-[9.5px] font-semibold uppercase tracking-[0.18em] text-[#d8b47c]">DATE</span>
+                  <span class="font-serif text-white font-medium">SUN, Dec 27, 2026</span>
+                </div>
+                <div>
+                  <span class="block font-sans text-[9.5px] font-semibold uppercase tracking-[0.18em] text-[#d8b47c]">TIME</span>
+                  <span class="font-serif text-white font-medium">07:00 PM onwards</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- =====================================================
+             CARD 3: WEDDING CEREMONY
+             ===================================================== -->
+        <article class="event-schedule-card reveal-on-scroll" style="background: linear-gradient(135deg, #7a1228 0%, #a81c38 52%, #5e0c1d 100%);">
+          <!-- Mandap floral drapes -->
+          <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 510 285" preserveAspectRatio="none">
+            <circle cx="385" cy="145" r="120" fill="#ffb3c1" opacity="0.14"/>
+            <g>
+              <circle cx="14" cy="24" r="18" fill="#ff8fa3" opacity="0.82"/>
+              <circle cx="36" cy="14" r="15" fill="#ffb3c1" opacity="0.85"/>
+              <circle cx="62" cy="10" r="13" fill="#ff758f" opacity="0.78"/>
+              <circle cx="12" cy="56" r="16" fill="#ffb3c1" opacity="0.82"/>
+              <circle cx="24" cy="88" r="14" fill="#ff8fa3" opacity="0.76"/>
+              <circle cx="10" cy="122" r="15" fill="#ffccd5" opacity="0.8"/>
+              <line x1="48" y1="0" x2="48" y2="78" stroke="#fff0f3" stroke-width="2" stroke-dasharray="2 4"/>
+              <line x1="74" y1="0" x2="74" y2="54" stroke="#fff0f3" stroke-width="2" stroke-dasharray="2 4"/>
+            </g>
+          </svg>
+
+          <div class="relative z-10 grid grid-cols-12 items-center min-h-[285px] px-4 sm:px-6 py-5 gap-3">
+            <!-- Left Side: Details -->
+            <div class="col-span-7 text-center sm:text-left pl-3 sm:pl-4 pr-1">
+              <span class="inline-block px-2.5 py-0.5 rounded-full bg-white/20 text-[#ffb3c1] font-sans text-[9px] font-semibold uppercase tracking-[0.16em] mb-1.5 backdrop-blur-xs">
+                CEREMONY 03
+              </span>
+              <h3 class="font-script text-[40px] sm:text-[46px] text-white leading-none mb-1">
+                Wedding Ceremony
+              </h3>
+              <p class="font-serif italic text-[13.5px] sm:text-[14.5px] text-[#fce8ec] leading-snug mb-3">
+                The sacred union of two hearts with Vedic blessings
+              </p>
+
+              <div class="space-y-2 text-[13.5px] sm:text-[14.5px]">
+                <div>
+                  <span class="block font-sans text-[9.5px] font-semibold uppercase tracking-[0.18em] text-[#ffb3c1]">DATE</span>
+                  <span class="font-serif text-white font-medium">MON, Dec 28, 2026</span>
+                </div>
+                <div>
+                  <span class="block font-sans text-[9.5px] font-semibold uppercase tracking-[0.18em] text-[#ffb3c1]">TIME</span>
+                  <span class="font-serif text-white font-medium">11:00 AM (Auspicious Muhurat)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Side: Wedding Avatar Illustration -->
+            <div class="col-span-5 flex justify-center items-center">
+              <div class="relative w-[150px] sm:w-[172px] h-[250px] sm:h-[270px] rounded-[18px] overflow-hidden shadow-[0_12px_28px_rgba(40,0,10,0.48)] border-2 border-white/80 bg-white/10 group">
+                <img
+                  src="./public/avatar-wedding.jpg"
+                  onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='./avatar-wedding.jpg';}else if(this.dataset.tried==='1'){this.dataset.tried='2';this.src='/avatar-wedding.jpg';}"
+                  alt="Wedding Ceremony Couple Avatar"
+                  class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none"></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- =====================================================
+             CARD 4: RECEPTION
+             ===================================================== -->
+        <article class="event-schedule-card reveal-on-scroll" style="background: linear-gradient(135deg, #0e2d27 0%, #164840 55%, #1e5c51 100%);">
+          <!-- Fairy lights & ambient glow SVG -->
+          <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 510 285" preserveAspectRatio="none">
+            <circle cx="120" cy="140" r="110" fill="#f5d076" opacity="0.12"/>
+            <path d="M0 10 Q85 36 170 10 Q255 36 340 10 Q425 36 510 10" stroke="#f5d076" stroke-width="3" stroke-dasharray="2 6" stroke-linecap="round" fill="none" opacity="0.6"/>
+            <circle cx="85" cy="36" r="2.5" fill="#fff5cc" opacity="0.9"/>
+            <circle cx="255" cy="36" r="2.5" fill="#fff5cc" opacity="0.9"/>
+            <circle cx="425" cy="36" r="2.5" fill="#fff5cc" opacity="0.9"/>
+          </svg>
+
+          <div class="relative z-10 grid grid-cols-12 items-center min-h-[285px] px-4 sm:px-6 py-5 gap-3">
+            <!-- Left Side: Reception Avatar Illustration -->
+            <div class="col-span-5 flex justify-center items-center">
+              <div class="relative w-[150px] sm:w-[172px] h-[250px] sm:h-[270px] rounded-[18px] overflow-hidden shadow-[0_12px_28px_rgba(10,35,30,0.48)] border-2 border-white/80 bg-white/10 group">
+                <img
+                  src="./public/avatar-reception.jpg"
+                  onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='./avatar-reception.jpg';}else if(this.dataset.tried==='1'){this.dataset.tried='2';this.src='/avatar-reception.jpg';}"
+                  alt="Reception Couple Avatar"
+                  class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none"></div>
+              </div>
+            </div>
+
+            <!-- Right Side: Details -->
+            <div class="col-span-7 text-center sm:text-right pl-1 pr-1">
+              <span class="inline-block px-2.5 py-0.5 rounded-full bg-white/20 text-[#f5d076] font-sans text-[9px] font-semibold uppercase tracking-[0.16em] mb-1.5 backdrop-blur-xs">
+                CEREMONY 04
+              </span>
+              <h3 class="font-script text-[44px] sm:text-[50px] text-[#f5d076] leading-none mb-1">
+                Reception
+              </h3>
+              <p class="font-serif italic text-[13.5px] sm:text-[14.5px] text-[#e6f3f0] leading-snug mb-3">
+                An evening of toasts, feast &amp; joyous celebration
+              </p>
+
+              <div class="space-y-2 text-[13.5px] sm:text-[14.5px]">
+                <div>
+                  <span class="block font-sans text-[9.5px] font-semibold uppercase tracking-[0.18em] text-[#f5d076]">DATE</span>
+                  <span class="font-serif text-white font-medium">MON, Dec 28, 2026</span>
+                </div>
+                <div>
+                  <span class="block font-sans text-[9.5px] font-semibold uppercase tracking-[0.18em] text-[#f5d076]">TIME</span>
+                  <span class="font-serif text-white font-medium">07:00 PM onwards</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SECTION 4: WEDDING DRESS CODE (With Avatar Previews)
+         ========================================================= -->
+    <section class="bg-warmIvory px-5 sm:px-8 py-12 text-center border-t border-b border-[#efe8de]/70">
+      <div class="max-w-[480px] mx-auto reveal-on-scroll">
+        <svg class="w-20 h-4 mx-auto mb-1 opacity-70" viewBox="0 0 100 20" fill="none">
+          <circle cx="50" cy="10" r="3" fill="#c45c6c"/>
+          <line x1="10" y1="10" x2="42" y2="10" stroke="#c45c6c" stroke-width="0.8"/>
+          <line x1="58" y1="10" x2="90" y2="10" stroke="#c45c6c" stroke-width="0.8"/>
+        </svg>
+        <h2 class="font-script text-[44px] sm:text-[48px] text-dustyRose leading-tight mb-1">
+          Wedding Dress Code
+        </h2>
+        <p class="font-serif italic text-[14.5px] sm:text-[15.5px] text-taupeGray mb-8">
+          Suggested attire palette &amp; vibes for our celebration ceremonies
+        </p>
+
+        <div class="flex flex-col gap-5 text-left">
+
+          <!-- 1. Carnival & Flower Haldi -->
+          <div class="dress-code-card p-4 sm:p-5 border-l-4 border-l-[#f5b82e]">
+            <div class="flex items-start gap-3.5">
+              <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden shrink-0 border-2 border-[#f5b82e]/50 shadow-md bg-amber-50">
+                <img
+                  src="./public/avatar-haldi.jpg"
+                  onerror="this.src='./avatar-haldi.jpg'"
+                  alt="Haldi Attire Avatar"
+                  class="w-full h-full object-cover object-top"
+                />
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="font-sans text-[10px] font-bold tracking-[0.18em] text-[#d9820b] uppercase">
+                    CARNIVAL &amp; FLOWER HALDI
+                  </span>
+                  <div class="flex items-center gap-1.5" title="Palette: Sunflower Yellow, Mint, Coral, Ivory">
+                    <span class="w-3.5 h-3.5 rounded-full bg-[#f5b82e] border border-white shadow-xs"></span>
+                    <span class="w-3.5 h-3.5 rounded-full bg-[#a5c2a7] border border-white shadow-xs"></span>
+                    <span class="w-3.5 h-3.5 rounded-full bg-[#f8cad2] border border-white shadow-xs"></span>
+                    <span class="w-3.5 h-3.5 rounded-full bg-[#fdfbf7] border border-gray-300 shadow-xs"></span>
+                  </div>
+                </div>
+                <h4 class="font-serif text-[18px] sm:text-[19px] text-[#3f4a3c] font-semibold leading-tight mb-1">
+                  Festive, Pastel &amp; Floral Prints
+                </h4>
+                <p class="font-serif text-[13px] text-taupeGray leading-relaxed mb-2.5">
+                  Light, breezy, and colorful attire perfect for a playful afternoon of games, smiles, and fresh flower petals.
+                </p>
+              </div>
+            </div>
+            <div class="font-sans text-[11px] text-[#7a6f65] bg-[#faf6ee] rounded-md px-3 py-2 border border-[#f0e6d6] mt-2">
+              <span class="font-medium text-[#4a423d]">Ladies:</span> Floral lehengas, pastel anarkalis, or bright georgette sarees.<br />
+              <span class="font-medium text-[#4a423d]">Gentlemen:</span> Vibrant yellow / pastel kurtas, printed Nehru jackets, or linen shirts.
+            </div>
+          </div>
+
+          <!-- 2. Sangeet -->
+          <div class="dress-code-card p-4 sm:p-5 border-l-4 border-l-[#1b346e]">
+            <div class="flex items-start gap-3.5">
+              <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden shrink-0 border-2 border-[#1b346e]/50 shadow-md bg-blue-950">
+                <img
+                  src="./public/avatar-sangeet.jpg"
+                  onerror="this.src='./avatar-sangeet.jpg'"
+                  alt="Sangeet Attire Avatar"
+                  class="w-full h-full object-cover object-top"
+                />
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="font-sans text-[10px] font-bold tracking-[0.18em] text-[#1b346e] uppercase">
+                    SANGEET NIGHT
+                  </span>
+                  <div class="flex items-center gap-1.5" title="Palette: Midnight Navy, Royal Blue, Champagne Gold, Shimmer">
+                    <span class="w-3.5 h-3.5 rounded-full bg-[#131a2e] border border-white shadow-xs"></span>
+                    <span class="w-3.5 h-3.5 rounded-full bg-[#234696] border border-white shadow-xs"></span>
+                    <span class="w-3.5 h-3.5 rounded-full bg-[#f5d076] border border-white shadow-xs"></span>
+                    <span class="w-3.5 h-3.5 rounded-full bg-[#e2e6f0] border border-gray-300 shadow-xs"></span>
+                  </div>
+                </div>
+                <h4 class="font-serif text-[18px] sm:text-[19px] text-[#3f4a3c] font-semibold leading-tight mb-1">
+                  Indo-Western &amp; Evening Glamour
+                </h4>
+                <p class="font-serif text-[13px] text-taupeGray leading-relaxed mb-2.5">
+                  Glamorous, stylish, and dance-floor ready for an unforgettable night of high-energy beats and joyful performances.
+                </p>
+              </div>
+            </div>
+            <div class="font-sans text-[11px] text-[#7a6f65] bg-[#f4f6fa] rounded-md px-3 py-2 border border-[#e4e8f2] mt-2">
+              <span class="font-medium text-[#4a423d]">Ladies:</span> Shimmery lehengas, sequins, contemporary gowns, or cocktail drape sarees.<br />
+              <span class="font-medium text-[#4a423d]">Gentlemen:</span> Bandhgalas, Indo-western blazers, dark tailored suits, or stylish sherwanis.
+            </div>
+          </div>
+
+          <!-- 3. Wedding Ceremony -->
+          <div class="dress-code-card p-4 sm:p-5 border-l-4 border-l-[#8a1d3a]">
+            <div class="flex items-start gap-3.5">
+              <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden shrink-0 border-2 border-[#8a1d3a]/50 shadow-md bg-rose-950">
+                <img
+                  src="./public/avatar-wedding.jpg"
+                  onerror="this.src='./avatar-wedding.jpg'"
+                  alt="Wedding Attire Avatar"
+                  class="w-full h-full object-cover object-top"
+                />
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="font-sans text-[10px] font-bold tracking-[0.18em] text-[#8a1d3a] uppercase">
+                    WEDDING CEREMONY
+                  </span>
+                  <div class="flex items-center gap-1.5" title="Palette: Royal Crimson, Paithani Green, Turmeric Gold, Cream">
+                    <span class="w-3.5 h-3.5 rounded-full bg-[#8a1d3a] border border-white shadow-xs"></span>
+                    <span class="w-3.5 h-3.5 rounded-full bg-[#1b7a43] border border-white shadow-xs"></span>
+                    <span class="w-3.5 h-3.5 rounded-full bg-[#e5a93c] border border-white shadow-xs"></span>
+                    <span class="w-3.5 h-3.5 rounded-full bg-[#fff8eb] border border-gray-300 shadow-xs"></span>
+                  </div>
+                </div>
+                <h4 class="font-serif text-[18px] sm:text-[19px] text-[#3f4a3c] font-semibold leading-tight mb-1">
+                  Traditional Maharashtrian / Indian Attire
+                </h4>
+                <p class="font-serif text-[13px] text-taupeGray leading-relaxed mb-2.5">
+                  Graceful traditional heritage wear honoring auspicious morning rituals and timeless cultural elegance.
+                </p>
+              </div>
+            </div>
+            <div class="font-sans text-[11px] text-[#7a6f65] bg-[#faf4f6] rounded-md px-3 py-2 border border-[#f2e1e6] mt-2">
+              <span class="font-medium text-[#4a423d]">Ladies:</span> Classic Paithani silk, Nauvari, Kanjeevaram sarees, or royal bridal silks.<br />
+              <span class="font-medium text-[#4a423d]">Gentlemen:</span> Traditional Kurta-Dhoti / Churidar with Pheta &amp; Uparna, or silk kurta sets.
+            </div>
+          </div>
+
+          <!-- 4. Reception -->
+          <div class="dress-code-card p-4 sm:p-5 border-l-4 border-l-[#164840]">
+            <div class="flex items-start gap-3.5">
+              <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden shrink-0 border-2 border-[#164840]/50 shadow-md bg-emerald-950">
+                <img
+                  src="./public/avatar-reception.jpg"
+                  onerror="this.src='./avatar-reception.jpg'"
+                  alt="Reception Attire Avatar"
+                  class="w-full h-full object-cover object-top"
+                />
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="font-sans text-[10px] font-bold tracking-[0.18em] text-[#164840] uppercase">
+                    RECEPTION
+                  </span>
+                  <div class="flex items-center gap-1.5" title="Palette: Emerald Green, Deep Wine, Onyx, Rose Gold">
+                    <span class="w-3.5 h-3.5 rounded-full bg-[#164840] border border-white shadow-xs"></span>
+                    <span class="w-3.5 h-3.5 rounded-full bg-[#5e0c1d] border border-white shadow-xs"></span>
+                    <span class="w-3.5 h-3.5 rounded-full bg-[#1c1817] border border-white shadow-xs"></span>
+                    <span class="w-3.5 h-3.5 rounded-full bg-[#f5d076] border border-gray-300 shadow-xs"></span>
+                  </div>
+                </div>
+                <h4 class="font-serif text-[18px] sm:text-[19px] text-[#3f4a3c] font-semibold leading-tight mb-1">
+                  Royal Formal &amp; Evening Glamour
+                </h4>
+                <p class="font-serif text-[13px] text-taupeGray leading-relaxed mb-2.5">
+                  Sophisticated evening wear to raise a toast, celebrate, and dine in majestic celebration with the newlyweds.
+                </p>
+              </div>
+            </div>
+            <div class="font-sans text-[11px] text-[#7a6f65] bg-[#f2f7f5] rounded-md px-3 py-2 border border-[#dcebe5] mt-2">
+              <span class="font-medium text-[#4a423d]">Ladies:</span> Designer evening gowns, rich zari silk sarees, or elegant reception lehengas.<br />
+              <span class="font-medium text-[#4a423d]">Gentlemen:</span> Classic black-tie tuxedos, sharp formal suits, or royal achkans.
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SECTION 5: PHOTO SECTION ("BEAUTIFUL MOMENTS") - CINEMATIC FILM ROLL
+         ========================================================= -->
+    <section class="watercolor-paper px-0 sm:px-4 py-12 text-center overflow-hidden">
+      <div class="reveal-on-scroll px-4 sm:px-7 mb-7">
+        <svg class="w-24 h-5 mx-auto mb-1 opacity-75" viewBox="0 0 120 24" fill="none">
+          <path d="M12 12 Q36 12 52 12 M68 12 Q84 12 108 12" stroke="#c45c6c" stroke-width="0.9"/>
+          <circle cx="60" cy="12" r="3" fill="#c45c6c"/>
+          <circle cx="53" cy="12" r="1.8" fill="#e5a93c"/>
+          <circle cx="67" cy="12" r="1.8" fill="#e5a93c"/>
+        </svg>
+        <span class="font-sans text-[10px] tracking-[0.25em] uppercase text-[#c59b5f] font-semibold block mb-1">
+          MEMORIES IN MOTION
+        </span>
+        <h2 class="font-script text-[44px] sm:text-[48px] text-dustyRose leading-tight mb-1">
+          Beautiful Moments
+        </h2>
+        <p class="font-serif italic text-[14.5px] sm:text-[15.5px] text-taupeGray max-w-sm mx-auto">
+          A continuous cinematic journey through our cherished memories and smiles
+        </p>
+      </div>
+
+      <!-- Continuous Marquee Track -->
+      <div class="film-roll-container relative w-full overflow-hidden select-none py-2" style="--marquee-duration: 50s;">
+        <!-- Top and bottom film strip gold accent line -->
+        <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#c59b5f]/40 to-transparent pointer-events-none z-10"></div>
+        <div class="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#c59b5f]/40 to-transparent pointer-events-none z-10"></div>
+
+        <!-- Left and right gradient fade masks -->
+        <div class="pointer-events-none absolute left-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-r from-[#FAF7F2] via-[#FAF7F2]/80 to-transparent z-10"></div>
+        <div class="pointer-events-none absolute right-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-l from-[#FAF7F2] via-[#FAF7F2]/80 to-transparent z-10"></div>
+
+        <div class="flex w-max" id="marquee-film-track">
+          <!-- Populated by JavaScript with Track 1 and Track 2 -->
+        </div>
+      </div>
+
+      <p class="font-sans text-[9.5px] uppercase tracking-[0.2em] text-[#8c827a] mt-4 text-center">
+        Hover to pause &bull; Tap photo to enlarge
+      </p>
+
+      <!-- Lightbox Modal -->
+      <div id="card-lightbox" class="fixed inset-0 z-50 bg-black/92 backdrop-blur-md hidden flex-col items-center justify-between p-4 sm:p-8">
+        <div class="w-full max-w-4xl flex items-center justify-between text-white/80 pt-2 px-2 z-20">
+          <div class="text-left">
+            <span class="font-sans text-[10px] tracking-[0.25em] uppercase text-[#f5d076] font-semibold block">Memories</span>
+            <span id="lightbox-counter" class="font-serif italic text-white/70 text-sm">1 of 8</span>
+          </div>
+          <button id="lightbox-close-btn" type="button" class="w-10 h-10 rounded-full border border-white/20 bg-black/50 text-white hover:border-[#f5d076] flex items-center justify-center transition-all cursor-pointer">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <div class="relative w-full max-w-4xl flex-1 flex items-center justify-center my-auto px-4">
+          <button id="lightbox-prev-btn" type="button" class="absolute left-0 sm:left-2 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full border border-white/20 bg-black/60 text-white hover:border-[#f5d076] flex items-center justify-center transition-all z-20 cursor-pointer">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+
+          <div class="relative max-h-[72vh] max-w-full flex items-center justify-center rounded-xl overflow-hidden border border-[#c59b5f]/40 shadow-2xl bg-black/40">
+            <img id="lightbox-img" src="" alt="Moment" class="max-h-[72vh] max-w-[85vw] sm:max-w-[75vw] w-auto h-auto object-contain select-none" />
+          </div>
+
+          <button id="lightbox-next-btn" type="button" class="absolute right-0 sm:right-2 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full border border-white/20 bg-black/60 text-white hover:border-[#f5d076] flex items-center justify-center transition-all z-20 cursor-pointer">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+
+        <div class="w-full max-w-2xl text-center pb-3 px-4 z-20">
+          <p id="lightbox-caption" class="font-serif italic text-white text-base sm:text-xl drop-shadow-md">""</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SECTION 6: "Awaiting Your Noble Presence" & "The Families"
+         ========================================================= -->
+    <section class="relative watercolor-paper px-6 py-12 text-center border-t border-[#efe8de]/80 overflow-hidden">
+      <svg class="absolute top-3 left-2 w-24 opacity-40 pointer-events-none" viewBox="0 0 100 100" fill="none">
+        <path d="M4,15 C28,14 48,30 56,56 C32,48 14,34 4,15 Z" fill="#a5c2a7"/>
+        <circle cx="28" cy="28" r="5" fill="#f5b3be"/>
+      </svg>
+      <svg class="absolute bottom-3 right-2 w-24 opacity-40 pointer-events-none rotate-180" viewBox="0 0 100 100" fill="none">
+        <path d="M4,15 C28,14 48,30 56,56 C32,48 14,34 4,15 Z" fill="#a5c2a7"/>
+        <circle cx="28" cy="28" r="5" fill="#f5b3be"/>
+      </svg>
+
+      <div class="relative z-10 max-w-[440px] mx-auto reveal-on-scroll">
+        <h2 class="font-script text-[40px] sm:text-[44px] text-dustyRose leading-tight mb-2">
+          Awaiting Your Noble Presence
+        </h2>
+        <p class="font-serif italic text-[15px] sm:text-[16px] text-taupeGray leading-relaxed mb-7">
+          Your presence, love, and sacred blessings will make our special day truly complete and unforgettable.
+        </p>
+
+        <div class="flex items-center justify-center gap-3 my-6">
+          <span class="h-[1px] w-16 bg-gradient-to-r from-transparent to-[#d6be96]"></span>
+          <svg class="w-6 h-5" viewBox="0 0 32 24" fill="none">
+            <path d="M16 4 Q20 12 16 19 Q12 12 16 4 Z" fill="#d9a441"/>
+            <path d="M16 19 Q23 14 25 8 Q19 10 16 19 Z" fill="#e5be73"/>
+            <path d="M16 19 Q9 14 7 8 Q13 10 16 19 Z" fill="#e5be73"/>
+          </svg>
+          <span class="h-[1px] w-16 bg-gradient-to-l from-transparent to-[#d6be96]"></span>
+        </div>
+
+        <h3 class="font-script text-[42px] sm:text-[46px] text-dustyRose leading-tight mb-6">
+          The Families
+        </h3>
+
+        <div class="space-y-6">
+          <div>
+            <span class="block font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-[#a38b72] mb-1.5">
+              GROOM'S PARENTS
+            </span>
+            <p class="font-serif text-[18px] sm:text-[19px] text-[#4a423d] leading-snug">
+              Mr. Sunil Sawant<br />
+              &amp; Mrs. Nilima Sawant
+            </p>
+          </div>
+
+          <div>
+            <span class="block font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-[#a38b72] mb-1.5">
+              BRIDE'S PARENTS
+            </span>
+            <p class="font-serif text-[18px] sm:text-[19px] text-[#4a423d] leading-snug">
+              Mr. Harish Tapase<br />
+              &amp; Mrs. Yogita Tapase
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SECTION 7: VENUE & INTERACTIVE MAP ("Where We Celebrate")
+         ========================================================= -->
+    <section class="bg-warmIvory px-5 sm:px-8 py-12 text-center border-t border-[#efe8de]/70">
+      <div class="max-w-[480px] mx-auto reveal-on-scroll">
+        <h2 class="font-script text-[42px] sm:text-[46px] text-dustyRose leading-tight mb-1.5">
+          Where We Celebrate
+        </h2>
+        <p class="font-serif text-[16px] text-taupeGray font-medium mb-1">
+          Dhawan Celebrations
+        </p>
+        <p class="font-serif text-[14.5px] text-taupeGray/90 mb-6">
+          Gorewada Ring Road, Nagpur, Maharashtra 440013
+        </p>
+
+        <div class="rounded-[16px] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.08)] border border-[#ece5dc] overflow-hidden text-left">
+          <div id="map-viewport" class="relative w-full h-[250px] sm:h-[270px] bg-[#e9edf0] overflow-hidden select-none">
+            <svg id="venue-map-svg" class="w-full h-full transition-transform duration-300 origin-center" viewBox="0 0 480 270" preserveAspectRatio="xMidYMid slice">
+              <rect width="480" height="270" fill="#f1f3f4"/>
+              
+              <path d="M0 0 L160 0 C180 40 150 90 110 115 C70 135 15 120 0 110 Z" fill="#cbe7f5"/>
+              <text x="32" y="55" font-family="Montserrat, sans-serif" font-size="9" font-weight="600" fill="#4a7c99">Gorewada Lake</text>
+              <path d="M110 115 C145 100 210 115 240 70 L250 0 L160 0 Z" fill="#d4eed8" opacity="0.8"/>
+              <text x="135" y="38" font-family="Montserrat, sans-serif" font-size="8" fill="#58855e">Gorewada Bio Park</text>
+
+              <g stroke="#ffffff" stroke-width="4" fill="none">
+                <path d="M40 120 L95 270"/>
+                <path d="M185 80 L155 270"/>
+                <path d="M340 0 L375 270"/>
+                <path d="M0 210 L480 205"/>
+                <path d="M220 0 L250 270"/>
+              </g>
+
+              <path d="M0 148 Q220 135 480 155" stroke="#f9d877" stroke-width="9" fill="none"/>
+              <path d="M0 148 Q220 135 480 155" stroke="#f4b942" stroke-width="1.4" fill="none"/>
+
+              <path d="M120 0 Q210 110 320 270" stroke="#f9d877" stroke-width="8" fill="none"/>
+              <path d="M120 0 Q210 110 320 270" stroke="#f4b942" stroke-width="1.2" fill="none"/>
+
+              <text x="55" y="166" font-family="Montserrat, sans-serif" font-size="8.5" font-weight="500" fill="#5f6368" transform="rotate(1 55 166)">Gorewada Ring Road</text>
+              <text x="260" y="215" font-family="Montserrat, sans-serif" font-size="8.5" font-weight="500" fill="#5f6368">Katol Bypass Rd</text>
+              <text x="350" y="125" font-family="Montserrat, sans-serif" font-size="9" font-weight="600" fill="#5f6368">Mankapur Ring Rd</text>
+              <text x="365" y="235" font-family="Montserrat, sans-serif" font-size="9.5" font-weight="600" fill="#5f6368">Nagpur City</text>
+
+              <g transform="translate(230, 142)">
+                <ellipse cx="0" cy="4" rx="7" ry="3" fill="rgba(0,0,0,0.24)"/>
+                <path d="M0 3 C-9 -9 -14 -16 -14 -24 A14 14 0 1 1 14 -24 C14 -16 9 -9 0 3 Z" fill="#ea4335" stroke="#b31412" stroke-width="1"/>
+                <circle cx="0" cy="-24" r="5" fill="#801412"/>
+                <text x="18" y="-18" font-family="Montserrat, sans-serif" font-size="11" font-weight="700" fill="#b31412">Dhawan Celebrations</text>
+                <text x="18" y="-6" font-family="Montserrat, sans-serif" font-size="8" fill="#5f6368">Gorewada Ring Rd</text>
+              </g>
+            </svg>
+
+            <div class="absolute top-3 left-3 bg-white/95 backdrop-blur-sm rounded-lg shadow-md border border-gray-200/80 p-2.5 max-w-[215px]">
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <p class="font-sans font-semibold text-[11.5px] text-gray-800 leading-tight">
+                    Dhawan Celebrations
+                  </p>
+                  <p class="font-sans text-[9.5px] text-gray-500 mt-0.5 leading-snug">
+                    Gorewada Ring Road, Nagpur
+                  </p>
+                </div>
+                <a
+                  href="https://maps.google.com/?q=Dhawan+Celebrations+Gorewada+Ring+Road+Nagpur"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex flex-col items-center text-[#1a73e8] hover:underline shrink-0"
+                  title="Directions"
+                >
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M21.71 11.29l-9-9a.996.996 0 00-1.41 0l-9 9a.996.996 0 000 1.41l9 9c.39.39 1.02.39 1.41 0l9-9a.996.996 0 000-1.41zM14 14.5V12h-4v3H8v-4c0-.55.45-1 1-1h5V7.5l3.5 3.5-3.5 3.5z"/>
+                  </svg>
+                  <span class="font-sans text-[8.5px] font-medium mt-0.5">Directions</span>
+                </a>
+              </div>
+              <a
+                href="https://maps.google.com/?q=Dhawan+Celebrations+Gorewada+Ring+Road+Nagpur"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-block font-sans text-[9.5px] text-[#1a73e8] hover:underline mt-1.5"
+              >
+                View larger map
+              </a>
+            </div>
+
+            <div class="absolute bottom-3 right-3 flex flex-col bg-white rounded-md shadow-md border border-gray-200 overflow-hidden">
+              <button
+                id="map-zoom-in"
+                type="button"
+                aria-label="Zoom in map"
+                class="w-7 h-7 flex items-center justify-center text-gray-600 hover:bg-gray-100 font-sans font-semibold text-base border-b border-gray-200"
+              >+</button>
+              <button
+                id="map-zoom-out"
+                type="button"
+                aria-label="Zoom out map"
+                class="w-7 h-7 flex items-center justify-center text-gray-600 hover:bg-gray-100 font-sans font-semibold text-base"
+              >−</button>
+            </div>
+          </div>
+
+          <div class="p-4 bg-white flex justify-center">
+            <a
+              href="https://maps.google.com/?q=Dhawan+Celebrations+Gorewada+Ring+Road+Nagpur"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center justify-center gap-2 px-7 py-2.5 rounded-full bg-[#c59b5f] hover:bg-[#b2894e] text-white font-sans text-[12px] font-medium tracking-[0.08em] shadow-md transition-all active:scale-95"
+            >
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+              </svg>
+              <span>Get Directions</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SECTION 8: FOOTER
+         ========================================================= -->
+    <footer class="relative bg-cocoaBrown text-center px-6 pt-10 pb-12 text-white overflow-hidden">
+      <svg class="absolute top-0 left-0 w-full h-3 text-warmIvory" viewBox="0 0 560 12" preserveAspectRatio="none">
+        <path d="M0,0 L560,0 L560,3 Q546,11 532,3 Q518,11 504,3 Q490,11 476,3 Q462,11 448,3 Q434,11 420,3 Q406,11 392,3 Q378,11 364,3 Q350,11 336,3 Q322,11 308,3 Q294,11 280,3 Q266,11 252,3 Q238,11 224,3 Q210,11 196,3 Q182,11 168,3 Q154,11 140,3 Q126,11 112,3 Q98,11 84,3 Q70,11 56,3 Q42,11 28,3 Q14,11 0,3 Z" fill="currentColor"/>
+      </svg>
+
+      <svg class="w-9 h-9 mx-auto mb-3 text-[#e6d2b5]" viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="3.5" fill="#e5a93c"/>
+        <circle cx="20" cy="10" r="3" stroke="currentColor" stroke-width="1.2"/>
+        <circle cx="20" cy="30" r="3" stroke="currentColor" stroke-width="1.2"/>
+        <circle cx="10" cy="20" r="3" stroke="currentColor" stroke-width="1.2"/>
+        <circle cx="30" cy="20" r="3" stroke="currentColor" stroke-width="1.2"/>
+        <circle cx="13" cy="13" r="2.4" stroke="#e5a93c" stroke-width="1"/>
+        <circle cx="27" cy="13" r="2.4" stroke="#e5a93c" stroke-width="1"/>
+        <circle cx="13" cy="27" r="2.4" stroke="#e5a93c" stroke-width="1"/>
+        <circle cx="27" cy="27" r="2.4" stroke="#e5a93c" stroke-width="1"/>
+      </svg>
+
+      <p class="font-sans text-[11px] font-medium uppercase tracking-[3px] text-[#e6d2b5] mb-1.5">
+        WITH LOVE
+      </p>
+
+      <h2 class="font-script text-[42px] sm:text-[46px] text-white leading-tight mb-3">
+        Shantanu &amp; Diptiksha
+      </h2>
+
+      <div class="flex items-center justify-center gap-2.5 my-3">
+        <span class="h-[1px] w-14 bg-[#e6d2b5]/40"></span>
+        <span class="w-2 h-2 rotate-45 bg-[#e5a93c] inline-block"></span>
+        <span class="h-[1px] w-14 bg-[#e6d2b5]/40"></span>
+      </div>
+
+      <p class="font-serif text-[16px] text-[#f2e4d0] mt-2 mb-1.5">
+        28th December 2026
+      </p>
+      <p class="font-sans text-[11px] font-medium uppercase tracking-[2.5px] text-[#d9c1a3]">
+        #DIPSHAN
+      </p>
+    </footer>
+  </main>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    (function () {
+      let isMusicPlaying = false;
+      let musicLoop = null;
+      let synth = null;
+
+      const musicBtn = document.getElementById('music-toggle');
+      const musicPlayBtn = document.getElementById('music-play-btn');
+      const iconOn = document.getElementById('music-icon-on');
+      const iconOff = document.getElementById('music-icon-off');
+      const soundwave = document.getElementById('music-soundwave');
+      const bgAudio = document.getElementById('wedding-bg-audio');
+
+      function updateAudioUI(playing) {
+        if (playing) {
+          iconOn.classList.remove('hidden');
+          iconOff.classList.add('hidden');
+          if (soundwave) soundwave.classList.remove('opacity-30');
+        } else {
+          iconOn.classList.add('hidden');
+          iconOff.classList.remove('hidden');
+          if (soundwave) soundwave.classList.add('opacity-30');
+        }
+      }
+
+      async function startWeddingMusic() {
+        let playedAudio = false;
+
+        // Try HTML5 Audio element first (our generated Jashn-E-Bahaaraa Flute audio file)
+        if (bgAudio) {
+          try {
+            await bgAudio.play();
+            playedAudio = true;
+            isMusicPlaying = true;
+            updateAudioUI(true);
+          } catch (e) {
+            console.log("Direct audio playback deferred to Web Audio Tone.js", e);
+          }
+        }
+
+        if (!playedAudio) {
+          try {
+            await Tone.start();
+            if (!synth) {
+              const reverb = new Tone.Reverb({ decay: 3.5, wet: 0.45 }).toDestination();
+              synth = new Tone.PolySynth(Tone.Synth, {
+                oscillator: { type: 'sine' },
+                envelope: { attack: 0.16, decay: 0.35, sustain: 0.5, release: 2.0 }
+              }).connect(reverb);
+              synth.volume.value = -10;
+
+              // Authentic Jashn-E-Bahaaraa Flute Theme
+              const notes = [
+                'E4', 'G4', 'A4', 'B4', 'C5', 'B4', 'A4', 'G4', 'A4',
+                'E4', 'G4', 'A4', 'B4', 'C5', 'B4', 'A4', 'G4', 'A4',
+                'E5', 'D5', 'C5', 'B4', 'A4', 'G4', 'A4', 'B4', 'C5', 'B4', 'A4'
+              ];
+              let step = 0;
+              musicLoop = new Tone.Loop((time) => {
+                const note = notes[step % notes.length];
+                synth.triggerAttackRelease(note, '2n', time);
+                step++;
+              }, '2n');
+            }
+            Tone.Transport.bpm.value = 76;
+            Tone.Transport.start();
+            musicLoop.start(0);
+            isMusicPlaying = true;
+            updateAudioUI(true);
+          } catch (err) {
+            isMusicPlaying = false;
+            updateAudioUI(false);
+          }
+        }
+      }
+
+      function stopWeddingMusic() {
+        if (bgAudio) {
+          try { bgAudio.pause(); } catch (e) {}
+        }
+        if (musicLoop) musicLoop.stop();
+        Tone.Transport.stop();
+        isMusicPlaying = false;
+        updateAudioUI(false);
+      }
+
+      const toggleMusic = () => {
+        if (isMusicPlaying) {
+          stopWeddingMusic();
+        } else {
+          startWeddingMusic();
+        }
+      };
+
+      if (musicBtn) musicBtn.addEventListener('click', toggleMusic);
+      if (musicPlayBtn) musicPlayBtn.addEventListener('click', toggleMusic);
+
+      const petalsCanvas = document.getElementById('petals-canvas');
+      const pCtx = petalsCanvas.getContext('2d');
+      let particles = [];
+      let petalsActive = true;
+
+      function resizePetalsCanvas() {
+        petalsCanvas.width = window.innerWidth;
+        petalsCanvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resizePetalsCanvas);
+      resizePetalsCanvas();
+
+      const particlePalette = [
+        { type: 'petal', color: '#f5a3b5' },
+        { type: 'petal', color: '#fbd0da' },
+        { type: 'petal', color: '#f7b844' },
+        { type: 'petal', color: '#f2859c' },
+        { type: 'butterfly', color: '#5fa8d3' },
+        { type: 'butterfly', color: '#f4a261' }
+      ];
+
+      function createParticle(startAtTop = false) {
+        const spec = particlePalette[Math.floor(Math.random() * particlePalette.length)];
+        return {
+          type: spec.type,
+          color: spec.color,
+          x: Math.random() * petalsCanvas.width,
+          y: startAtTop ? -20 : Math.random() * petalsCanvas.height,
+          size: spec.type === 'butterfly' ? 6 + Math.random() * 3 : 4.5 + Math.random() * 4,
+          speedY: 0.45 + Math.random() * 0.85,
+          speedX: (Math.random() - 0.5) * 0.65,
+          wobble: Math.random() * Math.PI * 2,
+          wobbleSpeed: 0.02 + Math.random() * 0.03,
+          rotation: Math.random() * Math.PI * 2,
+          rotSpeed: (Math.random() - 0.5) * 0.03,
+          opacity: 0.55 + Math.random() * 0.35
+        };
+      }
+
+      for (let i = 0; i < 24; i++) {
+        particles.push(createParticle(false));
+      }
+
+      function burstCelebrationPetals() {
+        for (let i = 0; i < 28; i++) {
+          const p = createParticle(false);
+          p.x = petalsCanvas.width * (0.3 + Math.random() * 0.4);
+          p.y = petalsCanvas.height * (0.25 + Math.random() * 0.35);
+          p.speedY = -1.2 + Math.random() * 2.6;
+          p.speedX = (Math.random() - 0.5) * 3.2;
+          particles.push(p);
+        }
+        if (particles.length > 55) {
+          particles = particles.slice(-45);
+        }
+      }
+
+      function renderParticles() {
+        pCtx.clearRect(0, 0, petalsCanvas.width, petalsCanvas.height);
+
+        if (petalsActive) {
+          for (let i = 0; i < particles.length; i++) {
+            const p = particles[i];
+            p.wobble += p.wobbleSpeed;
+            p.x += p.speedX + Math.sin(p.wobble) * 0.45;
+            p.y += p.speedY;
+            p.rotation += p.rotSpeed;
+
+            if (p.y > petalsCanvas.height + 24) {
+              particles[i] = createParticle(true);
+              continue;
+            }
+
+            pCtx.save();
+            pCtx.translate(p.x, p.y);
+            pCtx.rotate(p.rotation);
+            pCtx.globalAlpha = p.opacity;
+
+            if (p.type === 'petal') {
+              pCtx.fillStyle = p.color;
+              pCtx.beginPath();
+              pCtx.moveTo(0, -p.size);
+              pCtx.bezierCurveTo(p.size, -p.size * 0.5, p.size * 0.8, p.size, 0, p.size);
+              pCtx.bezierCurveTo(-p.size * 0.8, p.size, -p.size, -p.size * 0.5, 0, -p.size);
+              pCtx.fill();
+            } else {
+              const flap = Math.abs(Math.sin(p.wobble * 2.4)) * 0.7 + 0.3;
+              pCtx.fillStyle = p.color;
+              pCtx.beginPath();
+              pCtx.ellipse(-p.size * 0.5 * flap, -p.size * 0.2, p.size * 0.65 * flap, p.size * 0.45, -0.3, 0, Math.PI * 2);
+              pCtx.ellipse(p.size * 0.5 * flap, -p.size * 0.2, p.size * 0.65 * flap, p.size * 0.45, 0.3, 0, Math.PI * 2);
+              pCtx.fill();
+            }
+
+            pCtx.restore();
+          }
+        }
+        requestAnimationFrame(renderParticles);
+      }
+      requestAnimationFrame(renderParticles);
+
+      const splashScreen = document.getElementById('splash-screen');
+      const envelopeTrigger = document.getElementById('envelope-trigger');
+      let envelopeOpened = false;
+
+      function openEnvelope() {
+        if (envelopeOpened) return;
+        envelopeOpened = true;
+        envelopeTrigger.classList.add('is-opening');
+        startWeddingMusic();
+        burstCelebrationPetals();
+
+        setTimeout(() => {
+          splashScreen.classList.add('opened-away');
+          initScratchCanvas();
+        }, 620);
+      }
+
+      envelopeTrigger.addEventListener('click', openEnvelope);
+      envelopeTrigger.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openEnvelope();
+        }
+      });
+
+      const scratchBox = document.getElementById('scratch-box');
+      const scratchCanvas = document.getElementById('scratch-canvas');
+      const sCtx = scratchCanvas.getContext('2d');
+      let isScratching = false;
+      let isFoilCleared = false;
+      let strokeCount = 0;
+
+      function initScratchCanvas() {
+        const rect = scratchBox.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        scratchCanvas.width = rect.width * dpr;
+        scratchCanvas.height = rect.height * dpr;
+        sCtx.scale(dpr, dpr);
+
+        const grad = sCtx.createLinearGradient(0, 0, rect.width, rect.height);
+        grad.addColorStop(0, '#e8a838');
+        grad.addColorStop(0.32, '#f3c25b');
+        grad.addColorStop(0.65, '#e29e2b');
+        grad.addColorStop(1, '#d99326');
+        sCtx.fillStyle = grad;
+        sCtx.fillRect(0, 0, rect.width, rect.height);
+
+        for (let i = 0; i < 160; i++) {
+          sCtx.fillStyle = i % 2 === 0 ? 'rgba(255,255,255,0.16)' : 'rgba(166,105,12,0.12)';
+          sCtx.fillRect(Math.random() * rect.width, Math.random() * rect.height, 2, 2);
+        }
+
+        sCtx.strokeStyle = 'rgba(255, 250, 235, 0.55)';
+        sCtx.lineWidth = 1;
+        sCtx.strokeRect(8, 8, rect.width - 16, rect.height - 16);
+
+        sCtx.fillStyle = '#ffffff';
+        sCtx.font = '500 12px Montserrat, sans-serif';
+        sCtx.textAlign = 'center';
+        sCtx.textBaseline = 'middle';
+        sCtx.fillText('S C R A T C H   H E R E', rect.width / 2, rect.height / 2);
+      }
+
+      window.addEventListener('load', initScratchCanvas);
+
+      function getPointerPos(e) {
+        const rect = scratchCanvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return {
+          x: clientX - rect.left,
+          y: clientY - rect.top
+        };
+      }
+
+      function scratchAt(x, y) {
+        if (isFoilCleared) return;
+        sCtx.globalCompositeOperation = 'destination-out';
+        sCtx.beginPath();
+        sCtx.arc(x, y, 22, 0, Math.PI * 2);
+        sCtx.fill();
+
+        strokeCount++;
+        if (strokeCount % 8 === 0) {
+          checkScratchProgress();
+        }
+      }
+
+      function checkScratchProgress() {
+        try {
+          const imgData = sCtx.getImageData(0, 0, scratchCanvas.width, scratchCanvas.height).data;
+          let transparentPixels = 0;
+          const totalSampled = imgData.length / 16;
+          for (let i = 3; i < imgData.length; i += 16) {
+            if (imgData[i] < 128) transparentPixels++;
+          }
+          if (transparentPixels / totalSampled > 0.38) {
+            isFoilCleared = true;
+            scratchCanvas.classList.add('revealed');
+            burstCelebrationPetals();
+          }
+        } catch (err) {
+          if (strokeCount > 32) {
+            isFoilCleared = true;
+            scratchCanvas.classList.add('revealed');
+            burstCelebrationPetals();
+          }
+        }
+      }
+
+      scratchCanvas.addEventListener('mousedown', (e) => {
+        isScratching = true;
+        const pos = getPointerPos(e);
+        scratchAt(pos.x, pos.y);
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isScratching) return;
+        const pos = getPointerPos(e);
+        scratchAt(pos.x, pos.y);
+      });
+
+      window.addEventListener('mouseup', () => {
+        isScratching = false;
+      });
+
+      scratchCanvas.addEventListener('touchstart', (e) => {
+        isScratching = true;
+        const pos = getPointerPos(e);
+        scratchAt(pos.x, pos.y);
+      }, { passive: true });
+
+      scratchCanvas.addEventListener('touchmove', (e) => {
+        if (!isScratching) return;
+        const pos = getPointerPos(e);
+        scratchAt(pos.x, pos.y);
+      }, { passive: true });
+
+      scratchCanvas.addEventListener('touchend', () => {
+        isScratching = false;
+      });
+
+      /* Countdown */
+      const daysEl = document.getElementById('cd-days');
+      const hoursEl = document.getElementById('cd-hours');
+      const minutesEl = document.getElementById('cd-minutes');
+      const secondsEl = document.getElementById('cd-seconds');
+
+      const weddingTarget = new Date('2026-12-28T11:00:00+05:30').getTime();
+
+      function padZero(num) {
+        return String(num).padStart(2, '0');
+      }
+
+      function updateCountdown() {
+        const now = Date.now();
+        let diffSec = Math.floor((weddingTarget - now) / 1000);
+
+        if (diffSec <= 0) {
+          diffSec = 0;
+        }
+
+        const d = Math.floor(diffSec / 86400);
+        const h = Math.floor((diffSec % 86400) / 3600);
+        const m = Math.floor((diffSec % 3600) / 60);
+        const s = diffSec % 60;
+
+        daysEl.textContent = padZero(d);
+        hoursEl.textContent = padZero(h);
+        minutesEl.textContent = padZero(m);
+        secondsEl.textContent = padZero(s);
+      }
+
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+
+      /* Continuous Film Roll Gallery & Lightbox */
+      const galleryData = [
+        { url: './public/couple-04.jpg', altUrl: './couple-04.jpg', caption: 'Our adventure begins' },
+        { url: './public/couple-05.jpg', altUrl: './couple-05.jpg', caption: 'Joyful moments' },
+        { url: './public/couple-01.jpg', altUrl: './couple-01.jpg', caption: 'Perfect match' },
+        { url: './public/couple-02.jpg', altUrl: './couple-02.jpg', caption: 'Together forever' },
+        { url: './public/couple-03.jpg', altUrl: './couple-03.jpg', caption: 'Cherished times' },
+        { url: './public/gallery-01.jpg', altUrl: './gallery-01.jpg', caption: 'Smiles & laughter' },
+        { url: './public/gallery-02.jpg', altUrl: './gallery-02.jpg', caption: 'Endless love' },
+        { url: './public/gallery-03.jpg', altUrl: './gallery-03.jpg', caption: 'Our forever begins' },
+        { url: './public/gallery-04.jpg', altUrl: './gallery-04.jpg', caption: 'Precious smiles' },
+        { url: './public/gallery-05.jpg', altUrl: './gallery-05.jpg', caption: 'Every heartbeat' },
+        { url: './public/gallery-06.jpg', altUrl: './gallery-06.jpg', caption: 'Golden memories' },
+        { url: './public/gallery-07.jpg', altUrl: './gallery-07.jpg', caption: 'Soulmates' },
+      ];
+
+      const marqueeTrack = document.getElementById('marquee-film-track');
+      let currentLightboxIdx = 0;
+      const lightboxModal = document.getElementById('card-lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxCounter = document.getElementById('lightbox-counter');
+      const lightboxCloseBtn = document.getElementById('lightbox-close-btn');
+      const lightboxPrevBtn = document.getElementById('lightbox-prev-btn');
+      const lightboxNextBtn = document.getElementById('lightbox-next-btn');
+
+      function openLightbox(idx) {
+        currentLightboxIdx = (idx + galleryData.length) % galleryData.length;
+        const item = galleryData[currentLightboxIdx];
+        lightboxImg.src = item.url;
+        lightboxImg.onerror = function() {
+          if (this.src.includes('public/')) this.src = item.altUrl;
+        };
+        lightboxCaption.textContent = `"${item.caption}"`;
+        lightboxCounter.textContent = `${currentLightboxIdx + 1} of ${galleryData.length}`;
+        lightboxModal.classList.remove('hidden');
+        lightboxModal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        lightboxModal.classList.add('hidden');
+        lightboxModal.classList.remove('flex');
+        document.body.style.overflow = '';
+      }
+
+      function renderMarqueeTrack() {
+        if (!marqueeTrack) return;
+        
+        // Build Track 1 and Track 2 for seamless infinite loop
+        [1, 2].forEach((trackNum) => {
+          const trackDiv = document.createElement('div');
+          trackDiv.className = 'animate-film-roll flex items-center gap-3.5 sm:gap-5 pr-3.5 sm:pr-5 shrink-0';
+          if (trackNum === 2) trackDiv.setAttribute('aria-hidden', 'true');
+
+          galleryData.forEach((item, idx) => {
+            const card = document.createElement('div');
+            card.className = 'group/card relative cursor-pointer shrink-0 transition-transform duration-500 ease-out hover:-translate-y-1';
+            card.innerHTML = `
+              <div class="relative h-[220px] sm:h-[270px] w-[160px] sm:w-[195px] rounded-2xl overflow-hidden border border-[#c59b5f]/40 bg-[#FAF7F2] shadow-[0_6px_20px_rgba(0,0,0,0.06)] group-hover/card:shadow-[0_12px_28px_rgba(197,155,95,0.25)] group-hover/card:border-[#c59b5f] transition-all duration-500">
+                <img src="${item.url}" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='${item.altUrl}';}" alt="${item.caption}" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover/card:scale-105" />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3 text-center">
+                  <p class="font-serif italic text-white text-xs drop-shadow-md">"${item.caption}"</p>
+                  <span class="font-sans text-[8px] uppercase tracking-widest text-[#f5d076] mt-1">Tap to enlarge</span>
+                </div>
+              </div>
+            `;
+            card.addEventListener('click', () => openLightbox(idx));
+            trackDiv.appendChild(card);
+          });
+          marqueeTrack.appendChild(trackDiv);
+        });
+      }
+      renderMarqueeTrack();
+
+      if (lightboxCloseBtn) lightboxCloseBtn.addEventListener('click', closeLightbox);
+      if (lightboxPrevBtn) lightboxPrevBtn.addEventListener('click', () => openLightbox(currentLightboxIdx - 1));
+      if (lightboxNextBtn) lightboxNextBtn.addEventListener('click', () => openLightbox(currentLightboxIdx + 1));
+      if (lightboxModal) {
+        lightboxModal.addEventListener('click', (e) => {
+          if (e.target === lightboxModal) closeLightbox();
+        });
+      }
+
+      window.addEventListener('keydown', (e) => {
+        if (!lightboxModal || lightboxModal.classList.contains('hidden')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') openLightbox(currentLightboxIdx - 1);
+        if (e.key === 'ArrowRight') openLightbox(currentLightboxIdx + 1);
+      });
+
+      /* Map */
+      const mapSvg = document.getElementById('venue-map-svg');
+      const zoomInBtn = document.getElementById('map-zoom-in');
+      const zoomOutBtn = document.getElementById('map-zoom-out');
+      let mapScale = 1;
+
+      zoomInBtn.addEventListener('click', () => {
+        mapScale = Math.min(1.65, mapScale + 0.2);
+        mapSvg.style.transform = `scale(${mapScale})`;
+      });
+
+      zoomOutBtn.addEventListener('click', () => {
+        mapScale = Math.max(1, mapScale - 0.2);
+        mapSvg.style.transform = `scale(${mapScale})`;
+      });
+
+      const revealEls = document.querySelectorAll('.reveal-on-scroll');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      revealEls.forEach((el) => observer.observe(el));
+    })();
+  </script>
+</body>
+</html>

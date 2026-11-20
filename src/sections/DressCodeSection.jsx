@@ -2,32 +2,36 @@ import { motion } from 'framer-motion';
 
 const dressCodeData = [
   {
-    event: "Carnival",
-    vibe: "Festive / Pastel / Floral",
-    desc: "Light, breezy, and colorful attire perfect for a playful afternoon.",
-    color: "bg-rose/20",
-    illustration: "🌸"
+    event: "Carnival & Haldi",
+    vibe: "Festive Yellow / Pastel / Floral",
+    desc: "Light, breezy, and cheerful yellow & floral attire for sunshine and flower petals.",
+    color: "bg-amber-100/20",
+    illustration: "🌸",
+    avatar: "/avatar-haldi.jpg"
   },
   {
     event: "Sangeet",
-    vibe: "Elegant Evening Wear",
-    desc: "Glamorous and comfortable for a night of dancing.",
+    vibe: "Royal Blue & Evening Glamour",
+    desc: "Glamorous jewel tones and comfortable ethnic wear for an electric night of dancing.",
     color: "bg-emerald/20",
-    illustration: "✨"
+    illustration: "✨",
+    avatar: "/avatar-sangeet.jpg"
   },
   {
-    event: "Wedding",
-    vibe: "Traditional / Maharashtrian Attire",
-    desc: "Graceful traditional wear for the morning ceremony.",
+    event: "Wedding Ceremony",
+    vibe: "Traditional Maharashtrian / Royal Red & Gold",
+    desc: "Graceful Paithani sarees, kurtas, and traditional gold elegance for the sacred vows.",
     color: "bg-gold/20",
-    illustration: "👑"
+    illustration: "👑",
+    avatar: "/avatar-wedding.jpg"
   },
   {
     event: "Reception",
-    vibe: "Royal Formal / Evening Glamour",
-    desc: "Sophisticated attire to celebrate the evening in style.",
+    vibe: "Royal Formal / Deep Maroon & Velvet Navy",
+    desc: "Black-tie formals, regal lehengas, and tuxedos celebrating the grand night in style.",
     color: "bg-charcoal/10",
-    illustration: "🥂"
+    illustration: "🥂",
+    avatar: "/avatar-reception.jpg"
   }
 ];
 
@@ -58,8 +62,12 @@ export function DressCodeSection() {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               className="flex items-center gap-4 bg-paper/5 border border-gold/20 p-4 rounded-sm"
             >
-              <div className={`w-16 h-16 rounded-full flex items-center justify-center text-2xl shrink-0 ${item.color} border border-gold/30`}>
-                {item.illustration}
+              <div className="w-16 h-20 rounded-md overflow-hidden shrink-0 border border-gold/40 shadow-sm bg-paper/10 flex items-center justify-center">
+                {item.avatar ? (
+                  <img src={item.avatar} alt={item.event} className="w-full h-full object-cover" />
+                ) : (
+                  <span className="text-2xl">{item.illustration}</span>
+                )}
               </div>
               <div className="flex flex-col text-left">
                 <span className="font-sans text-[0.55rem] uppercase tracking-widest text-gold mb-1">
