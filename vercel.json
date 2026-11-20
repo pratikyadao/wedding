@@ -2,12 +2,8 @@
   "framework": "vite",
   "rewrites": [
     {
-      "source": "/",
-      "destination": "/wedding-card.html"
-    },
-    {
       "source": "/(.*)",
-      "destination": "/wedding-card.html"
+      "destination": "/index.html"
     }
   ]
 }
